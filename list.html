@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全部攻略分类 - 疯狂水世界攻略站</title>
+    <meta name="description" content="疯狂水世界全分类攻略检索页面，支持关键词搜索，分为新手入门、角色养成、副本攻略三大板块，快速查找养成与通关教程">
+    <meta name="keywords" content="疯狂水世界攻略列表,新手攻略,角色养成,副本攻略,搜索">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f0f8ff; }
+        .ad-placeholder {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+        .nav-active {
+            color: #ffd700 !important;
+            text-decoration: underline;
+        }
+        .cat-btn.active {
+            background-color: #3b82f6 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌊</span>
+                    <a href="index.html" class="font-bold text-lg">疯狂水世界攻略</a>
+                </div>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                        <span class="text-xl">⭐</span>
+                        <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
+                        <span>☰</span>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <nav class="flex flex-col gap-1">
+                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="py-2 px-3 rounded bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 收藏弹窗 -->
+    <div id="favoritesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">⭐ 我的收藏</h2>
+                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="favoritesList" class="flex-1 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <h1 class="text-2xl font-bold text-blue-600 mb-6">📚 攻略分类检索</h1>
+
+        <!-- 搜索框 -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+            <div class="relative">
+                <input type="text" id="searchInput" placeholder="搜索攻略关键词：开局、角色、BOSS、兑换码..." 
+                    class="w-full px-4 py-3 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+            </div>
+        </div>
+
+        <!-- 分类筛选按钮组 -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button onclick="filterByCategory('')" id="cat-all" class="cat-btn px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">全部攻略</button>
+            <button onclick="filterByCategory('新手入门')" id="cat-新手入门" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">新手入门</button>
+            <button onclick="filterByCategory('角色养成')" id="cat-角色养成" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">角色养成</button>
+            <button onclick="filterByCategory('副本攻略')" id="cat-副本攻略" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">副本攻略</button>
+        </div>
+
+        <!-- 动态攻略列表 -->
+        <div id="guidesList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        
+        <!-- 无结果提示 -->
+        <div id="noResults" class="hidden bg-white rounded-xl shadow-sm p-8 text-center">
+            <span class="text-4xl block mb-4">🔍</span>
+            <p class="text-gray-500">暂无相关攻略，可尝试其他关键词</p>
+        </div>
+    </main>
+
+    <!-- 全站底部广告位 -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="ad-placeholder h-24 md:h-32 rounded-xl">
+            <span>【全站底部广告位】</span>
+        </div>
+    </div>
+
+    <!-- 统一页脚 -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div>
+                    <h4 class="text-white font-bold mb-2">站点声明</h4>
+                    <p>本站仅为玩家交流使用，非游戏官方站点</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">收藏提示</h4>
+                    <p>Ctrl+D收藏本站，实时更新新版本攻略&兑换码</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">版权信息</h4>
+                    <p>疯狂水世界专属攻略站 持续更新</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+                © 2024 疯狂水世界攻略网 | 游戏攻略仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const guides = [
+        { id: 1, title: '新手入门全攻略：从零开始成为潜水大师', category: '新手入门', date: '2024-01-15', views: 12580, tags: ['新手', '入门', '必看'] },
+        { id: 2, title: '角色快速升级技巧：让你少走弯路', category: '新手入门', date: '2024-01-18', views: 9870, tags: ['升级', '技巧', '效率'] },
+        { id: 3, title: '如何快速获取金币？新手必看攻略', category: '新手入门', date: '2024-01-22', views: 8540, tags: ['金币', '新手', '资源'] },
+        { id: 4, title: '前期阵容搭配推荐：新手最强开局组合', category: '新手入门', date: '2024-01-25', views: 11230, tags: ['阵容', '新手', '搭配'] },
+        { id: 5, title: 'SSR角色培养指南：哪些角色值得培养', category: '角色养成', date: '2024-01-20', views: 15670, tags: ['SSR', '角色', '培养'] },
+        { id: 6, title: '装备强化系统详解：提升战力的关键', category: '角色养成', date: '2024-01-22', views: 8540, tags: ['装备', '强化', '战力'] },
+        { id: 7, title: '角色突破材料获取：最全掉落表', category: '角色养成', date: '2024-01-28', views: 7680, tags: ['突破', '材料', '掉落'] },
+        { id: 8, title: 'PVP竞技场入门：从青铜到黄金', category: '角色养成', date: '2024-02-01', views: 9450, tags: ['PVP', '竞技场', '技巧'] },
+        { id: 9, title: '深渊副本第一层通关攻略', category: '副本攻略', date: '2024-01-25', views: 11230, tags: ['副本', '深渊', '通关'] },
+        { id: 10, title: '水母森林探索攻略：隐藏宝箱位置', category: '副本攻略', date: '2024-01-28', views: 7680, tags: ['水母森林', '探索', '宝箱'] },
+        { id: 11, title: '珊瑚礁遗迹攻略：BOSS技能解析', category: '副本攻略', date: '2024-02-05', views: 13200, tags: ['珊瑚礁', 'BOSS', '攻略'] },
+        { id: 12, title: '海怪巢穴通关指南：阵容搭配推荐', category: '副本攻略', date: '2024-02-10', views: 8920, tags: ['海怪巢穴', '阵容', '通关'] },
+        { id: 13, title: '为什么我的角色战力上不去？常见问题解答', category: '常见问题', date: '2024-02-15', views: 14560, tags: ['战力', '问题', '解答'] },
+        { id: 14, title: '体力不够用怎么办？体力管理技巧', category: '常见问题', date: '2024-02-18', views: 10340, tags: ['体力', '管理', '技巧'] },
+        { id: 15, title: '抽卡概率是多少？保底机制详解', category: '常见问题', date: '2024-02-20', views: 16780, tags: ['抽卡', '概率', '保底'] },
+        { id: 16, title: '如何高效刷副本？节省时间技巧', category: '常见问题', date: '2024-02-22', views: 9230, tags: ['副本', '效率', '技巧'] },
+        { id: 17, title: '角色技能怎么加点？技能升级优先级', category: '常见问题', date: '2024-02-25', views: 11560, tags: ['技能', '加点', '优先级'] },
+        { id: 18, title: '公会系统怎么玩？公会贡献获取攻略', category: '常见问题', date: '2024-02-28', views: 8760, tags: ['公会', '贡献', '攻略'] }
+    ];
+
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    function updateFavoritesBadge() {
+        const badge = document.getElementById('favBadge');
+        if (favorites.length > 0) {
+            badge.textContent = favorites.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    function toggleFavorites() {
+        const modal = document.getElementById('favoritesModal');
+        modal.classList.toggle('hidden');
+        updateFavoritesList();
+    }
+
+    function updateFavoritesList() {
+        const container = document.getElementById('favoritesList');
+        if (favorites.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">暂无收藏攻略</p>';
+            return;
+        }
+        const favGuides = favorites.map(id => guides.find(g => g.id === id)).filter(Boolean);
+        container.innerHTML = favGuides.map(g => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer mb-2" 
+                 onclick="window.location.href='detail.html?id=${g.id}'; toggleFavorites();">
+                <div>
+                    <span class="text-xs text-blue-600">${g.category}</span>
+                    <p class="font-medium mt-1 text-sm">${g.title}</p>
+                </div>
+                <button onclick="event.stopPropagation(); removeFavorite(${g.id})" class="text-red-500 text-sm">删除</button>
+            </div>
+        `).join('');
+    }
+
+    function removeFavorite(id) {
+        favorites = favorites.filter(f => f !== id);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        updateFavoritesList();
+    }
+
+    function toggleFavorite(id) {
+        const index = favorites.indexOf(id);
+        if (index > -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push(id);
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        renderGuides();
+    }
+
+    function formatViews(views) {
+        if (views >= 10000) return (views / 10000).toFixed(1) + '万';
+        if (views >= 1000) return (views / 1000).toFixed(1) + 'k';
+        return views;
+    }
+
+    function getCategoryEmoji(category) {
+        const emojis = { '新手入门': '🐚', '角色养成': '⚔️', '副本攻略': '🏴‍☠️', '常见问题': '❓' };
+        return emojis[category] || '📜';
+    }
+
+    function filterByCategory(category) {
+        document.getElementById('categoryFilter').value = category;
+        document.getElementById('searchInput').value = '';
+        
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent === (category || '全部攻略'));
+        });
+        
+        searchGuides();
+    }
+
+    function searchGuides() {
+        const keyword = document.getElementById('searchInput').value.toLowerCase();
+        const category = document.getElementById('categoryFilter').value;
+        
+        let filtered = guides;
+        
+        if (category) {
+            filtered = filtered.filter(g => g.category === category);
+        }
+        
+        if (keyword) {
+            filtered = filtered.filter(g => 
+                g.title.toLowerCase().includes(keyword) || 
+                g.tags.some(t => t.toLowerCase().includes(keyword))
+            );
+        }
+        
+        renderGuides(filtered);
+    }
+
+    function renderGuides(filteredGuides = guides) {
+        const container = document.getElementById('guidesList');
+        const noResults = document.getElementById('noResults');
+        
+        if (filteredGuides.length === 0) {
+            container.innerHTML = '';
+            noResults.classList.remove('hidden');
+        } else {
+            noResults.classList.add('hidden');
+            container.innerHTML = filteredGuides.map(g => {
+                const isFav = favorites.includes(g.id);
+                return `
+                    <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-blue-300 to-blue-500 h-28 flex items-center justify-center">
+                            <span class="text-4xl">${getCategoryEmoji(g.category)}</span>
+                        </div>
+                        <div class="p-4">
+                            <span class="text-xs text-blue-600">${g.category}</span>
+                            <h3 class="font-bold text-base mt-1 mb-2 line-clamp-2 cursor-pointer" onclick="window.location.href='detail.html?id=${g.id}'">${g.title}</h3>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                ${g.tags.map(t => `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-xs">${t}</span>`).join('')}
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex gap-4 text-gray-500 text-xs">
+                                    <span>${g.date}</span>
+                                    <span>${formatViews(g.views)}阅读</span>
+                                </div>
+                                <button onclick="toggleFavorite(${g.id})" 
+                                    class="text-xs ${isFav ? 'text-yellow-500' : 'text-gray-400'} hover:text-yellow-500">
+                                    ${isFav ? '★已收藏' : '☆收藏'}
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFavoritesBadge();
+        
+        // 读取URL参数设置默认分类
+        const params = new URLSearchParams(window.location.search);
+        const defaultCategory = params.get('category');
+        if (defaultCategory) {
+            filterByCategory(defaultCategory);
+        } else {
+            renderGuides();
+        }
+        
+        // 搜索事件监听
+        document.getElementById('searchInput').addEventListener('input', searchGuides);
+        
+        // 移动端菜单
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    });
+    </script>
+    <input type="hidden" id="categoryFilter">
+</body>
+</html>

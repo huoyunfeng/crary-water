@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兑换码福利 - 疯狂水世界攻略站</title>
+    <meta name="description" content="疯狂水世界资源福利页面，包含兑换码使用教程、钻石金币体力速刷攻略和游戏内资源获取指南">
+    <meta name="keywords" content="疯狂水世界兑换码,资源攻略,金币速刷,体力获取">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f0f8ff; }
+        .ad-placeholder {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+        .nav-active {
+            color: #ffd700 !important;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌊</span>
+                    <a href="index.html" class="font-bold text-lg">疯狂水世界攻略</a>
+                </div>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">兑换码福利</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                        <span class="text-xl">⭐</span>
+                        <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
+                        <span>☰</span>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <nav class="flex flex-col gap-1">
+                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 收藏弹窗 -->
+    <div id="favoritesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">⭐ 我的收藏</h2>
+                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="favoritesList" class="flex-1 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <h1 class="text-2xl font-bold text-blue-600 mb-4">🎁 资源福利</h1>
+        <p class="text-gray-600 mb-6">这里是《疯狂水世界》的资源福利页面，包含资源速刷攻略和兑换码使用教程。<strong>注：游戏内兑换码由官方不定期发放，请关注官方公告获取最新兑换码。</strong></p>
+
+        <!-- 每日福利提醒 -->
+        <section class="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl shadow-sm p-6 mb-8 text-white">
+            <h2 class="text-lg font-bold mb-4">📅 每日必领福利</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                    <span class="text-2xl">💎</span>
+                    <h3 class="font-bold mt-2">每日签到</h3>
+                    <p class="text-sm mt-1 opacity-90">连续签到可获得钻石、金币等奖励</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                    <span class="text-2xl">⚡</span>
+                    <h3 class="font-bold mt-2">体力领取</h3>
+                    <p class="text-sm mt-1 opacity-90">每天固定时间可免费领取体力</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                    <span class="text-2xl">🎯</span>
+                    <h3 class="font-bold mt-2">日常任务</h3>
+                    <p class="text-sm mt-1 opacity-90">完成日常任务获取丰厚奖励</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 钻石速刷攻略 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">💎 钻石速刷攻略</h2>
+            <div class="space-y-4">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">1. 主线剧情</h3>
+                    <p class="text-gray-600 mt-2">完成主线剧情任务是获取钻石的主要途径，每通过一章可获得大量钻石奖励。</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">2. 成就系统</h3>
+                    <p class="text-gray-600 mt-2">完成各种成就目标可获得钻石奖励，包括角色培养、副本通关、竞技场排名等。</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">3. 竞技场奖励</h3>
+                    <p class="text-gray-600 mt-2">每天根据竞技场排名发放钻石奖励，排名越高奖励越多。</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">4. 活动奖励</h3>
+                    <p class="text-gray-600 mt-2">参与限时活动、节日活动可获得大量钻石奖励。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 金币速刷攻略 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">💰 金币速刷攻略</h2>
+            <div class="space-y-4">
+                <div class="bg-yellow-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">1. 金币副本</h3>
+                    <p class="text-gray-600 mt-2">每日必刷金币副本，可获得大量金币奖励，难度越高奖励越多。</p>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">2. 主线副本</h3>
+                    <p class="text-gray-600 mt-2">通关主线副本可获得金币奖励，重复刷已通关副本也可获取金币。</p>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">3. 出售装备</h3>
+                    <p class="text-gray-600 mt-2">将多余的装备出售可获得金币，蓝色及以下品质装备建议直接出售。</p>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">4. 日常任务</h3>
+                    <p class="text-gray-600 mt-2">完成每日任务可获得稳定的金币收入。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 体力获取攻略 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">⚡ 体力获取攻略</h2>
+            <div class="space-y-4">
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">1. 自然恢复</h3>
+                    <p class="text-gray-600 mt-2">每5分钟恢复1点体力，体力上限随等级提升而增加。</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">2. 等级奖励</h3>
+                    <p class="text-gray-600 mt-2">角色升级时会恢复一定量的体力。</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">3. 每日领取</h3>
+                    <p class="text-gray-600 mt-2">每天固定时间可在活动页面领取体力奖励。</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">4. 钻石购买</h3>
+                    <p class="text-gray-600 mt-2">每日可使用钻石购买体力3次，价格随购买次数递增。</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800">5. 公会加成</h3>
+                    <p class="text-gray-600 mt-2">加入公会可获得体力恢复速度加成。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 兑换码使用教程 -->
+        <section class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">📖 兑换码使用教程</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+                <ol class="space-y-3 text-gray-600">
+                    <li class="flex items-start gap-2">
+                        <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm">1</span>
+                        <span>进入游戏主界面，点击左上角的头像图标</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm">2</span>
+                        <span>在个人信息页面中，找到「设置」按钮并点击</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm">3</span>
+                        <span>在设置页面中，找到「兑换码」选项</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm">4</span>
+                        <span>输入兑换码，点击「确认」按钮</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm">5</span>
+                        <span>兑换成功后，奖励会发送到邮箱中</span>
+                    </li>
+                </ol>
+            </div>
+            <div class="mt-4 p-4 bg-yellow-50 rounded-lg">
+                <p class="text-yellow-800 text-sm">
+                    <strong>注意：</strong>兑换码有使用期限，每个兑换码只能使用一次。请在有效期内使用，过期将无法兑换。官方会不定期发布新的兑换码，请关注官方公众号、微博等渠道获取最新信息。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 全站底部广告位 -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="ad-placeholder h-24 md:h-32 rounded-xl">
+            <span>【全站底部广告位】</span>
+        </div>
+    </div>
+
+    <!-- 统一页脚 -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div>
+                    <h4 class="text-white font-bold mb-2">站点声明</h4>
+                    <p>本站仅为玩家交流使用，非游戏官方站点</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">收藏提示</h4>
+                    <p>Ctrl+D收藏本站，实时更新新版本攻略&兑换码</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">版权信息</h4>
+                    <p>疯狂水世界专属攻略站 持续更新</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+                © 2024 疯狂水世界攻略网 | 游戏攻略仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    function updateFavoritesBadge() {
+        const badge = document.getElementById('favBadge');
+        if (favorites.length > 0) {
+            badge.textContent = favorites.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    function toggleFavorites() {
+        const modal = document.getElementById('favoritesModal');
+        modal.classList.toggle('hidden');
+        updateFavoritesList();
+    }
+
+    function updateFavoritesList() {
+        const container = document.getElementById('favoritesList');
+        if (favorites.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">暂无收藏攻略</p>';
+            return;
+        }
+        const guides = [
+            { id: 1, title: '新手入门全攻略', category: '新手入门' },
+            { id: 2, title: '角色快速升级技巧', category: '新手入门' },
+            { id: 3, title: '如何快速获取金币', category: '新手入门' },
+            { id: 4, title: '前期阵容搭配推荐', category: '新手入门' },
+            { id: 5, title: 'SSR角色培养指南', category: '角色养成' },
+            { id: 6, title: '装备强化系统详解', category: '角色养成' },
+            { id: 7, title: '角色突破材料获取', category: '角色养成' },
+            { id: 8, title: 'PVP竞技场入门', category: '角色养成' },
+            { id: 9, title: '深渊副本第一层通关攻略', category: '副本攻略' },
+            { id: 10, title: '水母森林探索攻略', category: '副本攻略' },
+            { id: 11, title: '珊瑚礁遗迹攻略', category: '副本攻略' },
+            { id: 12, title: '海怪巢穴通关指南', category: '副本攻略' },
+            { id: 13, title: '为什么我的角色战力上不去', category: '常见问题' },
+            { id: 14, title: '体力不够用怎么办', category: '常见问题' },
+            { id: 15, title: '抽卡概率是多少', category: '常见问题' },
+            { id: 16, title: '如何高效刷副本', category: '常见问题' },
+            { id: 17, title: '角色技能怎么加点', category: '常见问题' },
+            { id: 18, title: '公会系统怎么玩', category: '常见问题' }
+        ];
+        const favGuides = favorites.map(id => guides.find(g => g.id === id)).filter(Boolean);
+        container.innerHTML = favGuides.map(g => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer mb-2" 
+                 onclick="window.location.href='detail.html?id=${g.id}'; toggleFavorites();">
+                <div>
+                    <span class="text-xs text-blue-600">${g.category}</span>
+                    <p class="font-medium mt-1 text-sm">${g.title}</p>
+                </div>
+                <button onclick="event.stopPropagation(); removeFavorite(${g.id})" class="text-red-500 text-sm">删除</button>
+            </div>
+        `).join('');
+    }
+
+    function removeFavorite(id) {
+        favorites = favorites.filter(f => f !== id);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        updateFavoritesList();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFavoritesBadge();
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    });
+    </script>
+</body>
+</html>

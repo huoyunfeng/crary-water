@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>攻略详情 - 疯狂水世界攻略站</title>
+    <meta name="description" content="疯狂水世界攻略详情页，包含完整攻略内容、评论区和相关攻略推荐">
+    <meta name="keywords" content="疯狂水世界,攻略详情,游戏攻略">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f0f8ff; }
+        .ad-placeholder {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+        .nav-active {
+            color: #ffd700 !important;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌊</span>
+                    <a href="index.html" class="font-bold text-lg">疯狂水世界攻略</a>
+                </div>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                        <span class="text-xl">⭐</span>
+                        <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
+                        <span>☰</span>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <nav class="flex flex-col gap-1">
+                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600">常见问题</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 收藏弹窗 -->
+    <div id="favoritesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">⭐ 我的收藏</h2>
+                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="favoritesList" class="flex-1 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 面包屑导航 -->
+        <nav class="flex items-center gap-2 text-sm mb-6">
+            <a href="index.html" class="text-blue-600 hover:text-blue-700">🏠 首页</a>
+            <span class="text-gray-400">></span>
+            <a href="list.html" class="text-blue-600 hover:text-blue-700">📚 攻略列表</a>
+            <span class="text-gray-400">></span>
+            <span class="text-gray-500">攻略详情</span>
+        </nav>
+
+        <!-- 攻略内容 -->
+        <article id="guideContent" class="bg-white rounded-xl shadow-sm overflow-hidden"></article>
+    </main>
+
+    <!-- 全站底部广告位 -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="ad-placeholder h-24 md:h-32 rounded-xl">
+            <span>【全站底部广告位】</span>
+        </div>
+    </div>
+
+    <!-- 统一页脚 -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div>
+                    <h4 class="text-white font-bold mb-2">站点声明</h4>
+                    <p>本站仅为玩家交流使用，非游戏官方站点</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">收藏提示</h4>
+                    <p>Ctrl+D收藏本站，实时更新新版本攻略&兑换码</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">版权信息</h4>
+                    <p>疯狂水世界专属攻略站 持续更新</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+                © 2024 疯狂水世界攻略网 | 游戏攻略仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const guides = [
+        { 
+            id: 1, 
+            title: '新手入门全攻略：从零开始成为潜水大师', 
+            category: '新手入门', 
+            date: '2024-01-15', 
+            views: 12580,
+            content: `## 一、游戏初期目标
+
+进入游戏后，你的首要目标是**快速升级**和**积累资源**。前期不要纠结于抽卡，先完成主线任务。
+
+## 二、主线任务优先级
+
+1. **剧情任务**：必做，解锁新功能和地图
+2. **日常任务**：每日必清，稳定获取经验和金币
+3. **限时活动**：奖励丰厚，不容错过
+
+## 三、资源获取技巧
+
+- **金币**：完成日常任务、出售多余装备
+- **体力**：定时领取、升级奖励、活动兑换
+- **钻石**：完成成就、每日签到、活动奖励
+
+## 四、阵容搭配建议
+
+新手推荐阵容：
+- 海洋战士（坦克）
+- 珊瑚法师（输出）
+- 水母治疗师（辅助）
+
+这套阵容攻防兼备，适合前期推图。`,
+            related: [2, 4, 5],
+            comments: [
+                { user: '深海探险家', content: '非常详细！新手必备攻略', time: '2024-01-16' },
+                { user: '潜水达人', content: '阵容推荐很实用，已通关第一章', time: '2024-01-17' },
+                { user: '海洋王者', content: '建议新手先看这个，少走弯路', time: '2024-01-18' }
+            ]
+        },
+        { 
+            id: 2, 
+            title: '角色快速升级技巧：让你少走弯路', 
+            category: '新手入门', 
+            date: '2024-01-18', 
+            views: 9870,
+            content: `## 一、经验获取途径
+
+1. **主线副本**：经验最高，优先完成
+2. **精英副本**：经验次之，难度适中
+3. **日常任务**：稳定经验来源
+4. **活动副本**：限时开启，经验丰厚
+
+## 二、升级技巧
+
+- **体力分配**：优先刷主线，体力不够时做日常
+- **双倍经验卡**：留到活动期间使用效果更佳
+- **好友助战**：选择高等级好友，获得额外经验加成
+
+## 三、注意事项
+
+- 不要浪费体力在低等级副本
+- 升级后及时领取奖励，可能获得体力
+- 加入公会可获得经验加成`,
+            related: [1, 7, 8],
+            comments: [
+                { user: '新手玩家', content: '升级速度明显提升了！', time: '2024-01-19' },
+                { user: '老玩家', content: '双倍经验卡的用法很关键', time: '2024-01-20' }
+            ]
+        },
+        { 
+            id: 3, 
+            title: '如何快速获取金币？新手必看攻略', 
+            category: '新手入门', 
+            date: '2024-01-22', 
+            views: 8540,
+            content: `## 一、金币来源
+
+1. **金币副本**：每日必刷，稳定收入
+2. **主线副本**：通关奖励
+3. **出售装备**：多余装备不要浪费
+4. **日常任务**：完成任务获取
+
+## 二、金币使用建议
+
+- **装备强化**：优先强化主力输出装备
+- **技能升级**：提升角色战力
+- **商店购买**：只买必需品
+
+## 三、小技巧
+
+- 每日金币副本刷满
+- 关注限时金币活动
+- 合理规划消费`,
+            related: [1, 6, 14],
+            comments: [
+                { user: '金币不够用', content: '终于知道怎么刷金币了', time: '2024-01-23' },
+                { user: '精打细算', content: '金币要花在刀刃上', time: '2024-01-24' }
+            ]
+        },
+        { 
+            id: 4, 
+            title: '前期阵容搭配推荐：新手最强开局组合', 
+            category: '新手入门', 
+            date: '2024-01-25', 
+            views: 11230,
+            content: `## 一、新手推荐阵容
+
+### 组合一：均衡型
+- 海洋战士（坦克）
+- 珊瑚法师（输出）
+- 水母治疗师（辅助）
+
+### 组合二：暴力输出型
+- 鲨鱼猎手（主输出）
+- 电鳗法师（副输出）
+- 海龟守护者（坦克）
+
+## 二、阵容搭配原则
+
+1. **前排**：坦克角色，吸收伤害
+2. **中排**：输出角色，造成伤害
+3. **后排**：辅助角色，治疗增益
+
+## 三、角色获取途径
+
+- **初始十连**：必出SSR
+- **活动赠送**：完成任务获取
+- **商店兑换**：用碎片兑换`,
+            related: [1, 5, 9],
+            comments: [
+                { user: '刚入坑', content: '推荐的阵容很实用', time: '2024-01-26' },
+                { user: '老玩家', content: '新手这套阵容足够用到中期', time: '2024-01-27' }
+            ]
+        },
+        { 
+            id: 5, 
+            title: 'SSR角色培养指南：哪些角色值得培养', 
+            category: '角色养成', 
+            date: '2024-01-20', 
+            views: 15670,
+            content: `## 一、T0级别（必养）
+
+### 海洋霸主·大白鲨
+- **定位**：输出
+- **技能**：群体伤害+破甲
+- **获取**：高级召唤
+
+### 深海女皇·章鱼
+- **定位**：控制
+- **技能**：群体控制+减益
+- **获取**：活动限定
+
+## 二、T1级别（推荐养）
+
+### 珊瑚守护者
+- **定位**：坦克
+- **技能**：嘲讽+护盾
+- **获取**：普通召唤
+
+### 电鳗法师
+- **定位**：输出
+- **技能**：单体爆发
+- **获取**：普通召唤
+
+## 三、培养优先级
+
+1. 主输出角色
+2. 坦克角色
+3. 辅助角色
+
+## 四、注意事项
+
+- 不要同时培养多个同类型角色
+- 资源集中投入主力队伍
+- 关注版本更新，角色强度可能变化`,
+            related: [4, 6, 7],
+            comments: [
+                { user: '抽到SSR', content: '知道该培养哪个了', time: '2024-01-21' },
+                { user: '新手提问', content: '培养顺序很重要', time: '2024-01-22' }
+            ]
+        },
+        { 
+            id: 6, 
+            title: '装备强化系统详解：提升战力的关键', 
+            category: '角色养成', 
+            date: '2024-01-22', 
+            views: 8540,
+            content: `## 一、装备分类
+
+1. **武器**：提升攻击力
+2. **防具**：提升防御力
+3. **饰品**：提升特殊属性
+
+## 二、强化等级
+
+- 装备最高可强化至+15
+- 强化有成功率，等级越高成功率越低
+- 强化失败不降级
+
+## 三、强化材料获取
+
+- **强化石**：副本掉落、商店购买
+- **金币**：强化消耗
+
+## 四、强化技巧
+
+- 优先强化主力输出武器
+- 防具强化到+10即可
+- 饰品根据角色定位选择`,
+            related: [5, 7, 13],
+            comments: [
+                { user: '战力提升', content: '强化后战力明显提升', time: '2024-01-23' },
+                { user: '合理强化', content: '不要盲目追求高等级', time: '2024-01-24' }
+            ]
+        },
+        { 
+            id: 7, 
+            title: '角色突破材料获取：最全掉落表', 
+            category: '角色养成', 
+            date: '2024-01-28', 
+            views: 7680,
+            content: `## 一、突破材料分类
+
+1. **通用材料**：所有角色都需要
+2. **属性材料**：特定属性角色需要
+3. **角色专属材料**：特定角色突破需要
+
+## 二、材料获取途径
+
+| 材料类型 | 获取途径 |
+|---------|---------|
+| 突破石 | 突破副本、商店兑换 |
+| 属性精华 | 精英副本、活动奖励 |
+| 专属材料 | 角色副本、活动兑换 |
+
+## 三、刷取建议
+
+- 根据培养计划刷取对应材料
+- 优先刷精英副本获取属性精华
+- 商店每日限购材料记得购买`,
+            related: [5, 6, 17],
+            comments: [
+                { user: '材料不够', content: '掉落表很实用', time: '2024-01-29' },
+                { user: '新手必备', content: '知道去哪里刷材料了', time: '2024-01-30' }
+            ]
+        },
+        { 
+            id: 8, 
+            title: 'PVP竞技场入门：从青铜到黄金', 
+            category: '角色养成', 
+            date: '2024-02-01', 
+            views: 9450,
+            content: `## 一、竞技场规则
+
+1. 每日免费挑战次数：5次
+2. 挑战成功获得积分，失败扣积分
+3. 每日根据排名发放奖励
+
+## 二、阵容推荐
+
+### 进攻阵容
+- 高爆发输出+控制+辅助
+
+### 防守阵容
+- 双坦克+治疗+输出
+
+## 三、上分技巧
+
+- 观察对手阵容，针对性调整
+- 利用先手优势
+- 合理使用技能`,
+            related: [5, 4, 12],
+            comments: [
+                { user: '竞技场新手', content: '上分到黄金了！', time: '2024-02-02' },
+                { user: '老玩家', content: '阵容克制很重要', time: '2024-02-03' }
+            ]
+        },
+        { 
+            id: 9, 
+            title: '深渊副本第一层通关攻略', 
+            category: '副本攻略', 
+            date: '2024-01-25', 
+            views: 11230,
+            content: `## 一、副本介绍
+
+深渊副本是游戏中的高难度副本，通关可获得大量资源和装备。
+
+## 二、BOSS技能解析
+
+### 深渊领主技能
+1. **暗影爆发**：群体伤害
+2. **黑暗护盾**：减少受到的伤害
+3. **召唤小怪**：召唤深渊小怪
+
+## 三、通关阵容
+
+- 坦克：珊瑚守护者
+- 输出：鲨鱼猎手、电鳗法师
+- 辅助：水母治疗师
+
+## 四、战斗要点
+
+- 优先击杀召唤的小怪
+- 在BOSS护盾期间减少输出
+- 留好治疗技能应对BOSS大招`,
+            related: [4, 10, 11],
+            comments: [
+                { user: '卡关了', content: '终于通关了！', time: '2024-01-26' },
+                { user: '攻略有用', content: 'BOSS技能解析很到位', time: '2024-01-27' }
+            ]
+        },
+        { 
+            id: 10, 
+            title: '水母森林探索攻略：隐藏宝箱位置', 
+            category: '副本攻略', 
+            date: '2024-01-28', 
+            views: 7680,
+            content: `## 一、副本介绍
+
+水母森林是游戏中的探索副本，有多个隐藏宝箱等待发现。
+
+## 二、隐藏宝箱位置
+
+1. **宝箱1**：入口右侧珊瑚后面
+2. **宝箱2**：中间水母群上方
+3. **宝箱3**：BOSS区域左侧岩石后
+
+## 三、探索技巧
+
+- 仔细观察地图角落
+- 注意发光的水母，可能是宝箱提示
+- 完成探索可获得额外奖励`,
+            related: [9, 11, 12],
+            comments: [
+                { user: '探险家', content: '找到了所有宝箱！', time: '2024-01-29' },
+                { user: '新手', content: '原来还有隐藏宝箱', time: '2024-01-30' }
+            ]
+        },
+        { 
+            id: 11, 
+            title: '珊瑚礁遗迹攻略：BOSS技能解析', 
+            category: '副本攻略', 
+            date: '2024-02-05', 
+            views: 13200,
+            content: `## 一、副本背景
+
+珊瑚礁遗迹是古代海洋文明的遗迹，守护BOSS是一只巨型章鱼。
+
+## 二、BOSS技能
+
+1. **触手攻击**：单体伤害
+2. **喷墨**：群体伤害+失明效果
+3. **召唤小章鱼**：召唤小怪
+
+## 三、通关要点
+
+- 携带驱散技能应对失明
+- 优先清理小章鱼
+- BOSS血量低于30%时会狂暴，注意治疗`,
+            related: [9, 10, 12],
+            comments: [
+                { user: '卡BOSS', content: '技能解析很有用', time: '2024-02-06' },
+                { user: '攻略详细', content: '终于通关珊瑚礁了', time: '2024-02-07' }
+            ]
+        },
+        { 
+            id: 12, 
+            title: '海怪巢穴通关指南：阵容搭配推荐', 
+            category: '副本攻略', 
+            date: '2024-02-10', 
+            views: 8920,
+            content: `## 一、副本介绍
+
+海怪巢穴是游戏中的高难度团队副本，需要组队挑战。
+
+## 二、推荐阵容
+
+### 坦克位
+- 海洋战士/珊瑚守护者
+
+### 输出位
+- 鲨鱼猎手+电鳗法师
+
+### 辅助位
+- 水母治疗师+海马牧师
+
+## 三、战斗策略
+
+1. 坦克拉仇恨，保护队友
+2. 输出注意BOSS技能冷却
+3. 辅助及时治疗和驱散负面效果
+
+## 四、奖励
+
+通关可获得SSR装备和大量资源`,
+            related: [9, 10, 11],
+            comments: [
+                { user: '组队挑战', content: '阵容推荐很实用', time: '2024-02-11' },
+                { user: '攻略清晰', content: '终于打过了', time: '2024-02-12' }
+            ]
+        },
+        { 
+            id: 13, 
+            title: '为什么我的角色战力上不去？常见问题解答', 
+            category: '常见问题', 
+            date: '2024-02-15', 
+            views: 14560,
+            content: `## 一、战力构成
+
+战力由以下因素决定：
+1. 角色等级
+2. 角色星级
+3. 装备强化等级
+4. 技能等级
+5. 角色突破等级
+
+## 二、常见问题分析
+
+### 问题1：等级太低
+- 解决方案：刷经验副本、完成日常任务
+
+### 问题2：装备没强化
+- 解决方案：优先强化主力装备到+10
+
+### 问题3：技能没升级
+- 解决方案：消耗金币升级技能
+
+### 问题4：角色没突破
+- 解决方案：收集突破材料进行突破
+
+## 三、提升战力步骤
+
+1. 提升角色等级到当前上限
+2. 强化装备到+10
+3. 升级技能到等级上限
+4. 突破角色`,
+            related: [5, 6, 7],
+            comments: [
+                { user: '战力低', content: '找到了问题所在', time: '2024-02-16' },
+                { user: '新手提问', content: '战力提升有方向了', time: '2024-02-17' }
+            ]
+        },
+        { 
+            id: 14, 
+            title: '体力不够用怎么办？体力管理技巧', 
+            category: '常见问题', 
+            date: '2024-02-18', 
+            views: 10340,
+            content: `## 一、体力获取途径
+
+1. **自然恢复**：每5分钟恢复1点
+2. **升级奖励**：升级获得体力
+3. **每日领取**：固定时间领取
+4. **钻石购买**：每日可购买3次
+5. **活动奖励**：完成活动获取
+
+## 二、体力管理技巧
+
+- 合理安排体力使用时间
+- 优先刷当前等级最高副本
+- 保存体力用于限时活动
+- 加入公会获取体力加成
+
+## 三、注意事项
+
+- 体力上限会随等级提升
+- 不要浪费体力在低价值副本
+- 活动期间可适当购买体力`,
+            related: [2, 3, 16],
+            comments: [
+                { user: '体力总不够', content: '管理技巧很实用', time: '2024-02-19' },
+                { user: '新手', content: '知道怎么规划体力了', time: '2024-02-20' }
+            ]
+        },
+        { 
+            id: 15, 
+            title: '抽卡概率是多少？保底机制详解', 
+            category: '常见问题', 
+            date: '2024-02-20', 
+            views: 16780,
+            content: `## 一、抽卡概率
+
+### 普通召唤
+- R级角色：70%
+- SR级角色：25%
+- SSR级角色：5%
+
+### 高级召唤
+- SR级角色：75%
+- SSR级角色：25%
+
+## 二、保底机制
+
+- **普通召唤**：每10连必出SR或SSR
+- **高级召唤**：每90连必出SSR
+
+## 三、抽卡建议
+
+- 攒够10连再抽，享受保底
+- 活动期间抽卡概率可能提升
+- 不要盲目抽卡，根据需求选择`,
+            related: [5, 13, 17],
+            comments: [
+                { user: '抽卡玄学', content: '保底机制很重要', time: '2024-02-21' },
+                { user: '新手', content: '知道抽卡概率了', time: '2024-02-22' }
+            ]
+        },
+        { 
+            id: 16, 
+            title: '如何高效刷副本？节省时间技巧', 
+            category: '常见问题', 
+            date: '2024-02-22', 
+            views: 9230,
+            content: `## 一、副本效率提升
+
+1. **自动战斗**：开启自动战斗节省操作时间
+2. **跳过动画**：开启快速战斗跳过技能动画
+3. **组队挑战**：组队挑战效率更高
+
+## 二、体力分配策略
+
+- 优先刷主线副本推进剧情
+- 精英副本根据需求刷取
+- 活动副本优先完成
+
+## 三、时间管理
+
+- 利用碎片时间刷副本
+- 关注双倍经验活动
+- 合理安排游戏时间`,
+            related: [2, 9, 14],
+            comments: [
+                { user: '效率提升', content: '刷副本快多了', time: '2024-02-23' },
+                { user: '时间管理', content: '建议很实用', time: '2024-02-24' }
+            ]
+        },
+        { 
+            id: 17, 
+            title: '角色技能怎么加点？技能升级优先级', 
+            category: '常见问题', 
+            date: '2024-02-25', 
+            views: 11560,
+            content: `## 一、技能分类
+
+1. **主动技能**：需要手动释放
+2. **被动技能**：自动生效
+3. **必杀技**：消耗能量释放
+
+## 二、加点优先级
+
+### 输出角色
+1. 主输出技能
+2. 被动增伤技能
+3. 必杀技
+
+### 坦克角色
+1. 嘲讽技能
+2. 减伤技能
+3. 恢复技能
+
+### 辅助角色
+1. 治疗技能
+2. 增益技能
+3. 驱散技能
+
+## 三、注意事项
+
+- 技能等级不能超过角色等级
+- 合理分配技能点
+- 根据角色定位选择加点方向`,
+            related: [5, 7, 13],
+            comments: [
+                { user: '技能加点', content: '知道怎么加点了', time: '2024-02-26' },
+                { user: '新手', content: '加点优先级很清楚', time: '2024-02-27' }
+            ]
+        },
+        { 
+            id: 18, 
+            title: '公会系统怎么玩？公会贡献获取攻略', 
+            category: '常见问题', 
+            date: '2024-02-28', 
+            views: 8760,
+            content: `## 一、公会系统介绍
+
+公会是玩家互助的平台，可获得多种加成和奖励。
+
+## 二、公会贡献获取
+
+1. **每日签到**：基础贡献
+2. **公会任务**：完成任务获取
+3. **公会副本**：挑战副本获取
+4. **公会捐献**：捐献资源获取
+
+## 三、贡献用途
+
+- 购买公会商店物品
+- 学习公会技能
+- 兑换角色碎片
+
+## 四、公会活动
+
+- 公会战：每周一次
+- 公会副本：每日可挑战
+- 公会宴会：获取体力`,
+            related: [2, 8, 14],
+            comments: [
+                { user: '公会新手', content: '知道怎么玩公会了', time: '2024-02-29' },
+                { user: '老玩家', content: '贡献获取途径很全面', time: '2024-03-01' }
+            ]
+        }
+    ];
+
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    let currentGuideId = null;
+
+    function updateFavoritesBadge() {
+        const badge = document.getElementById('favBadge');
+        if (favorites.length > 0) {
+            badge.textContent = favorites.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    function toggleFavorites() {
+        const modal = document.getElementById('favoritesModal');
+        modal.classList.toggle('hidden');
+        updateFavoritesList();
+    }
+
+    function updateFavoritesList() {
+        const container = document.getElementById('favoritesList');
+        if (favorites.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">暂无收藏攻略</p>';
+            return;
+        }
+        const favGuides = favorites.map(id => guides.find(g => g.id === id)).filter(Boolean);
+        container.innerHTML = favGuides.map(g => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer mb-2" 
+                 onclick="window.location.href='detail.html?id=${g.id}'; toggleFavorites();">
+                <div>
+                    <span class="text-xs text-blue-600">${g.category}</span>
+                    <p class="font-medium mt-1 text-sm">${g.title}</p>
+                </div>
+                <button onclick="event.stopPropagation(); removeFavorite(${g.id})" class="text-red-500 text-sm">删除</button>
+            </div>
+        `).join('');
+    }
+
+    function removeFavorite(id) {
+        favorites = favorites.filter(f => f !== id);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        updateFavoritesList();
+        if (currentGuideId === id) {
+            updateFavoriteButton();
+        }
+    }
+
+    function toggleFavorite(id) {
+        const index = favorites.indexOf(id);
+        if (index > -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push(id);
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        updateFavoriteButton();
+    }
+
+    function updateFavoriteButton() {
+        const btn = document.getElementById('favoriteBtn');
+        const isFav = favorites.includes(currentGuideId);
+        if (isFav) {
+            btn.className = 'px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors';
+            btn.innerHTML = '✅ 已收藏';
+        } else {
+            btn.className = 'px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors';
+            btn.innerHTML = '⭐ 收藏攻略';
+        }
+    }
+
+    function formatViews(views) {
+        if (views >= 10000) return (views / 10000).toFixed(1) + '万';
+        if (views >= 1000) return (views / 1000).toFixed(1) + 'k';
+        return views;
+    }
+
+    function renderGuide(guide) {
+        currentGuideId = guide.id;
+        const content = guide.content;
+        const contentHtml = content.split('\n').map(line => {
+            if (line.startsWith('## ')) {
+                return `<h2 class="text-xl font-bold text-blue-600 mt-6 mb-3">${line.replace('## ', '')}</h2>`;
+            }
+            if (line.startsWith('### ')) {
+                return `<h3 class="text-lg font-bold text-blue-500 mt-4 mb-2">${line.replace('### ', '')}</h3>`;
+            }
+            if (line.startsWith('|')) {
+                return `<div class="overflow-x-auto"><table class="w-full border-collapse my-4">${line}</table></div>`;
+            }
+            if (line.startsWith('- ')) {
+                return `<li class="ml-4 text-gray-600">${line.replace('- ', '')}</li>`;
+            }
+            if (line.trim()) {
+                return `<p class="text-gray-600 leading-relaxed mb-3">${line}</p>`;
+            }
+            return '';
+        }).join('');
+
+        const relatedGuides = guide.related.map(id => guides.find(g => g.id === id)).filter(Boolean);
+
+        document.getElementById('guideContent').innerHTML = `
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">${guide.category}</span>
+                        <h1 class="text-2xl font-bold text-gray-800 mt-3 mb-2">${guide.title}</h1>
+                        <div class="flex gap-4 text-gray-500 text-sm">
+                            <span>📅 ${guide.date}</span>
+                            <span>👁️ ${formatViews(guide.views)}阅读</span>
+                        </div>
+                    </div>
+                    <button id="favoriteBtn" onclick="toggleFavorite(${guide.id})" 
+                        class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors">
+                        ⭐ 收藏攻略
+                    </button>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-6">
+                    ${contentHtml}
+                </div>
+                
+                <!-- 正文中部广告位 -->
+                <div class="ad-placeholder h-24 md:h-32 rounded-xl my-8">
+                    <span>【正文中部广告位】</span>
+                </div>
+            </div>
+            
+            <!-- 相关攻略推荐 -->
+            <div class="bg-gray-50 px-6 py-4">
+                <h3 class="font-bold text-lg mb-4">📖 相关攻略推荐</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    ${relatedGuides.map(g => `
+                        <article class="bg-white rounded-lg p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow" 
+                                 onclick="window.location.href='detail.html?id=${g.id}'">
+                            <span class="text-xs text-blue-600">${g.category}</span>
+                            <h4 class="font-medium mt-1 text-sm line-clamp-2">${g.title}</h4>
+                        </article>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <!-- 评论区 -->
+            <div class="p-6">
+                <h3 class="font-bold text-lg mb-4">💬 玩家评论</h3>
+                <div class="space-y-4">
+                    ${guide.comments.map(c => `
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium text-blue-600">${c.user}</span>
+                                <span class="text-gray-400 text-xs">${c.time}</span>
+                            </div>
+                            <p class="text-gray-600 mt-2">${c.content}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        updateFavoriteButton();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFavoritesBadge();
+        
+        const params = new URLSearchParams(window.location.search);
+        const guideId = parseInt(params.get('id')) || 1;
+        const guide = guides.find(g => g.id === guideId) || guides[0];
+        
+        // 更新页面标题
+        document.title = guide.title + ' - 疯狂水世界攻略站';
+        
+        renderGuide(guide);
+        
+        // 移动端菜单
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题 - 疯狂水世界攻略站</title>
+    <meta name="description" content="疯狂水世界常见问题解答，包含新手疑问、角色养成、兑换码问题和游戏BUG问题的解决方案">
+    <meta name="keywords" content="疯狂水世界FAQ,常见问题,游戏答疑">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f0f8ff; }
+        .ad-placeholder {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+        .nav-active {
+            color: #ffd700 !important;
+            text-decoration: underline;
+        }
+        .faq-answer {
+            display: none;
+        }
+        .faq-question.active + .faq-answer {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌊</span>
+                    <a href="index.html" class="font-bold text-lg">疯狂水世界攻略</a>
+                </div>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">常见问题</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                        <span class="text-xl">⭐</span>
+                        <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
+                        <span>☰</span>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="md:hidden hidden pb-4">
+                <nav class="flex flex-col gap-1">
+                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600">首页</a>
+                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded hover:bg-blue-600">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded bg-blue-600">常见问题</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 收藏弹窗 -->
+    <div id="favoritesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">⭐ 我的收藏</h2>
+                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="favoritesList" class="flex-1 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <h1 class="text-2xl font-bold text-blue-600 mb-4">❓ 常见问题FAQ</h1>
+        <p class="text-gray-600 mb-6">这里是《疯狂水世界》的常见问题解答页面，涵盖新手疑问、角色养成、兑换码问题和游戏BUG问题等内容。点击问题即可展开查看答案。</p>
+
+        <!-- 分类筛选按钮 -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            <button onclick="filterFAQ('all')" id="cat-all" class="cat-btn px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">全部问题</button>
+            <button onclick="filterFAQ('新手疑问')" id="cat-新手疑问" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">新手疑问</button>
+            <button onclick="filterFAQ('角色养成')" id="cat-角色养成" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">角色养成</button>
+            <button onclick="filterFAQ('兑换码问题')" id="cat-兑换码问题" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">兑换码问题</button>
+            <button onclick="filterFAQ('游戏BUG')" id="cat-游戏BUG" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">游戏BUG</button>
+        </div>
+
+        <!-- FAQ问答面板 -->
+        <div id="faqContainer" class="space-y-4"></div>
+    </main>
+
+    <!-- 全站底部广告位 -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="ad-placeholder h-24 md:h-32 rounded-xl">
+            <span>【全站底部广告位】</span>
+        </div>
+    </div>
+
+    <!-- 统一页脚 -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div>
+                    <h4 class="text-white font-bold mb-2">站点声明</h4>
+                    <p>本站仅为玩家交流使用，非游戏官方站点</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">收藏提示</h4>
+                    <p>Ctrl+D收藏本站，实时更新新版本攻略&兑换码</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-2">版权信息</h4>
+                    <p>疯狂水世界专属攻略站 持续更新</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+                © 2024 疯狂水世界攻略网 | 游戏攻略仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const faqData = [
+        { 
+            category: '新手疑问', 
+            question: '游戏初期应该先做什么？', 
+            answer: '游戏初期应优先完成主线剧情任务，这是获取经验和资源的主要途径。同时，每日签到和日常任务也是必须完成的，可以获得稳定的资源收入。不要过早投入资源培养角色，先了解游戏机制再做决定。'
+        },
+        { 
+            category: '新手疑问', 
+            question: '如何快速升级角色？', 
+            answer: '升级角色需要消耗经验药水，经验药水可以通过副本掉落、日常任务奖励、商店购买等方式获取。建议优先升级主力输出和坦克角色，确保推图效率。'
+        },
+        { 
+            category: '新手疑问', 
+            question: '前期阵容怎么搭配？', 
+            answer: '前期推荐搭配：珊瑚守护者（坦克）+ 电鳗法师（输出）+ 水母治疗师（辅助）。这套阵容攻防兼备，适合前期推图。如果抽到SSR角色，可以替换相应位置。'
+        },
+        { 
+            category: '新手疑问', 
+            question: '钻石应该怎么用？', 
+            answer: '钻石优先用于购买体力和抽卡。前期可以适当抽卡获取强力角色，但不要过度消耗。体力是游戏进度的关键，建议每天购买完所有体力。'
+        },
+        { 
+            category: '角色养成', 
+            question: '哪些角色值得培养？', 
+            answer: 'T0级别：海洋霸主·大白鲨、深海女皇·章鱼（必养）；T1级别：珊瑚守护者、电鳗法师、鲨鱼猎手、水母治疗师（推荐养）；T2级别：海龟守护者、海马牧师（可养）；T3级别不推荐培养。'
+        },
+        { 
+            category: '角色养成', 
+            question: '装备强化有什么技巧？', 
+            answer: '优先强化主力输出角色的武器，防具强化到+10即可，饰品根据角色定位选择。强化有成功率，等级越高成功率越低，建议在活动期间使用强化成功率提升道具。'
+        },
+        { 
+            category: '角色养成', 
+            question: '技能怎么加点？', 
+            answer: '输出角色优先升级主输出技能和被动增伤技能；坦克角色优先升级嘲讽和减伤技能；辅助角色优先升级治疗和增益技能。技能等级不能超过角色等级。'
+        },
+        { 
+            category: '角色养成', 
+            question: '角色突破材料在哪里刷？', 
+            answer: '突破石可以在突破副本和商店兑换获取；属性精华主要来自精英副本和活动奖励；角色专属材料需要在对应角色副本中获取。建议根据培养计划有针对性地刷取。'
+        },
+        { 
+            category: '兑换码问题', 
+            question: '兑换码在哪里使用？', 
+            answer: '进入游戏主界面，点击左上角头像→设置→兑换码，输入兑换码后点击确认即可。兑换成功后，奖励会发送到邮箱中。'
+        },
+        { 
+            category: '兑换码问题', 
+            question: '兑换码过期了怎么办？', 
+            answer: '兑换码都有使用期限，过期后无法使用。请关注官方公众号、微博等渠道获取最新兑换码信息。'
+        },
+        { 
+            category: '兑换码问题', 
+            question: '为什么兑换码显示已使用？', 
+            answer: '每个兑换码只能使用一次，如果显示已使用，说明该兑换码已经被使用过了。请尝试使用其他兑换码。'
+        },
+        { 
+            category: '游戏BUG', 
+            question: '游戏闪退怎么办？', 
+            answer: '游戏闪退可能是由于设备性能不足、网络不稳定或游戏版本过旧导致。建议：1. 关闭其他后台应用；2. 检查网络连接；3. 更新游戏到最新版本；4. 清理游戏缓存。'
+        },
+        { 
+            category: '游戏BUG', 
+            question: '角色消失了怎么办？', 
+            answer: '角色消失可能是显示bug，退出游戏重新登录通常可以解决。如果问题持续存在，请联系官方客服提供详细信息。'
+        },
+        { 
+            category: '游戏BUG', 
+            question: '充值未到账怎么办？', 
+            answer: '充值未到账可能是网络延迟导致，请稍等片刻后查看邮箱。如果超过30分钟仍未到账，请保留充值凭证并联系官方客服处理。'
+        },
+        { 
+            category: '游戏BUG', 
+            question: '副本卡住了怎么办？', 
+            answer: '副本卡住可以尝试退出副本重新进入，或者重启游戏。如果问题持续存在，可能是服务器问题，请稍后再试。'
+        }
+    ];
+
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    function updateFavoritesBadge() {
+        const badge = document.getElementById('favBadge');
+        if (favorites.length > 0) {
+            badge.textContent = favorites.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    function toggleFavorites() {
+        const modal = document.getElementById('favoritesModal');
+        modal.classList.toggle('hidden');
+        updateFavoritesList();
+    }
+
+    function updateFavoritesList() {
+        const container = document.getElementById('favoritesList');
+        if (favorites.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">暂无收藏攻略</p>';
+            return;
+        }
+        const guides = [
+            { id: 1, title: '新手入门全攻略', category: '新手入门' },
+            { id: 2, title: '角色快速升级技巧', category: '新手入门' },
+            { id: 3, title: '如何快速获取金币', category: '新手入门' },
+            { id: 4, title: '前期阵容搭配推荐', category: '新手入门' },
+            { id: 5, title: 'SSR角色培养指南', category: '角色养成' },
+            { id: 6, title: '装备强化系统详解', category: '角色养成' },
+            { id: 7, title: '角色突破材料获取', category: '角色养成' },
+            { id: 8, title: 'PVP竞技场入门', category: '角色养成' },
+            { id: 9, title: '深渊副本第一层通关攻略', category: '副本攻略' },
+            { id: 10, title: '水母森林探索攻略', category: '副本攻略' },
+            { id: 11, title: '珊瑚礁遗迹攻略', category: '副本攻略' },
+            { id: 12, title: '海怪巢穴通关指南', category: '副本攻略' },
+            { id: 13, title: '为什么我的角色战力上不去', category: '常见问题' },
+            { id: 14, title: '体力不够用怎么办', category: '常见问题' },
+            { id: 15, title: '抽卡概率是多少', category: '常见问题' },
+            { id: 16, title: '如何高效刷副本', category: '常见问题' },
+            { id: 17, title: '角色技能怎么加点', category: '常见问题' },
+            { id: 18, title: '公会系统怎么玩', category: '常见问题' }
+        ];
+        const favGuides = favorites.map(id => guides.find(g => g.id === id)).filter(Boolean);
+        container.innerHTML = favGuides.map(g => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer mb-2" 
+                 onclick="window.location.href='detail.html?id=${g.id}'; toggleFavorites();">
+                <div>
+                    <span class="text-xs text-blue-600">${g.category}</span>
+                    <p class="font-medium mt-1 text-sm">${g.title}</p>
+                </div>
+                <button onclick="event.stopPropagation(); removeFavorite(${g.id})" class="text-red-500 text-sm">删除</button>
+            </div>
+        `).join('');
+    }
+
+    function removeFavorite(id) {
+        favorites = favorites.filter(f => f !== id);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesBadge();
+        updateFavoritesList();
+    }
+
+    function toggleFAQ(index) {
+        const questions = document.querySelectorAll('.faq-question');
+        questions[index].classList.toggle('active');
+    }
+
+    function filterFAQ(category) {
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-500', 'text-white');
+            btn.classList.add('bg-gray-100', 'text-gray-700');
+        });
+        document.getElementById('cat-' + (category === 'all' ? 'all' : category)).classList.remove('bg-gray-100', 'text-gray-700');
+        document.getElementById('cat-' + (category === 'all' ? 'all' : category)).classList.add('bg-blue-500', 'text-white');
+
+        const filtered = category === 'all' ? faqData : faqData.filter(item => item.category === category);
+        renderFAQ(filtered);
+    }
+
+    function renderFAQ(data) {
+        const container = document.getElementById('faqContainer');
+        container.innerHTML = data.map((item, index) => `
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="faq-question flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors" 
+                     onclick="toggleFAQ(${index})">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">${index + 1}</span>
+                        <span class="font-bold text-gray-800">${item.question}</span>
+                    </div>
+                    <span class="text-gray-400 text-xl transition-transform">▼</span>
+                </div>
+                <div class="faq-answer bg-gray-50 p-4">
+                    <p class="text-gray-600">${item.answer}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFavoritesBadge();
+        renderFAQ(faqData);
+        
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    });
+    </script>
+</body>
+</html>
