@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>角色图鉴 - 疯狂水世界攻略站</title>
-    <meta name="description" content="疯狂水世界角色强度榜，包含全角色图鉴、强度梯度排行、培养优先级和适配场景推荐">
-    <meta name="keywords" content="疯狂水世界角色,角色图鉴,强度榜,培养攻略">
+    <title>疯狂水世界深渊副本通关攻略 - 全角色强度梯度图鉴 | 角色培养优先级推荐</title>
+    <meta name="description" content="疯狂水世界全角色图鉴强度梯度表，划分T0-T3角色梯队，标注各角色获取方式、培养优先级与深渊副本适配场景，新手快速分清必养/过渡角色，搭配深渊副本开荒阵容少走弯路。">
+    <meta name="keywords" content="疯狂水世界深渊副本通关攻略，疯狂水世界角色强度榜，SSR角色培养攻略，深渊副本阵容搭配">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
-        body { background-color: #f0f8ff; }
+        body { background-color: #f5f9ff; }
         .ad-placeholder {
             background: #f5f5f5;
             border: 2px dashed #ccc;
@@ -23,15 +23,79 @@
             color: #ffd700 !important;
             text-decoration: underline;
         }
-        .gradient-T0 { background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%); }
-        .gradient-T1 { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); }
-        .gradient-T2 { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-        .gradient-T3 { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
+        .tier-T0 { background-color: #FFD322; color: #333; }
+        .tier-T1 { background-color: #9955DD; color: #fff; }
+        .tier-T2 { background-color: #3377DD; color: #fff; }
+        .tier-T3 { background-color: #555555; color: #fff; }
+        .star-filled { color: #FFC107; }
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip:hover .tooltip-content {
+            display: block;
+        }
+        .tooltip-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #333;
+        }
+        .gradient-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .gradient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        .sortable:hover {
+            background-color: #e5e7eb;
+        }
+        .sort-icon::after {
+            content: ' ⇅';
+            font-size: 12px;
+            color: #999;
+        }
+        .sort-asc::after {
+            content: ' ↑';
+            color: #333;
+        }
+        .sort-desc::after {
+            content: ' ↓';
+            color: #333;
+        }
+        @media (max-width: 768px) {
+            .gradient-card-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- 顶部固定导航栏 -->
-    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+    <header class="text-white sticky top-0 z-50 shadow-lg" style="background-color: #2478E5;">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-14">
                 <div class="flex items-center gap-2">
@@ -42,13 +106,13 @@
                     <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
                     <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600">全部攻略</a>
                     <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
-                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">角色图鉴</a>
+                    <a href="character.html" class="px-3 py-2 rounded nav-active">角色图鉴</a>
                     <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
                     <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600">兑换码福利</a>
                     <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600">常见问题</a>
                 </nav>
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg" title="收藏本攻略页">
                         <span class="text-xl">⭐</span>
                         <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                     </button>
@@ -86,224 +150,123 @@
     <!-- 主内容区 -->
     <main class="container mx-auto px-4 py-6">
         <!-- 页面标题 -->
-        <h1 class="text-2xl font-bold text-blue-600 mb-4">⚔️ 角色图鉴/强度榜</h1>
-        <p class="text-gray-600 mb-6">这里是《疯狂水世界》全角色图鉴，包含角色强度梯度排行、培养优先级和适配场景推荐。帮助你更好地规划角色培养方向！</p>
+        <h1 class="text-2xl font-bold text-blue-600 mb-2">🐟 角色图鉴 / 强度榜</h1>
+        <p class="text-gray-500 mb-6 text-sm">这里是《疯狂水世界》全角色图鉴，包含角色强度梯度排行、培养优先级和适配场景推荐。帮助你更好地规划角色培养方向！</p>
 
-        <!-- 角色梯度分类说明 -->
+        <!-- 强度梯度释义色块模块 -->
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
             <h2 class="text-lg font-bold text-blue-600 mb-4">📊 强度梯度释义</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="gradient-T0 rounded-lg p-4 text-white">
-                    <h3 class="font-bold">T0 - 版本之子</h3>
-                    <p class="text-sm mt-2 opacity-90">当前版本最强角色，必养，无论什么阵容都能上场</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 gradient-card-grid">
+                <div class="gradient-card rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 font-bold text-white" style="background-color: #FFD322; color: #333;">T0 - 版本之子</div>
+                    <div class="p-4 bg-white">
+                        <p class="text-sm text-gray-600">当前版本最强角色，必养，无论什么阵容都能上场</p>
+                    </div>
                 </div>
-                <div class="gradient-T1 rounded-lg p-4 text-white">
-                    <h3 class="font-bold">T1 - 强力推荐</h3>
-                    <p class="text-sm mt-2 opacity-90">非常强力的角色，强度在线，值得培养</p>
+                <div class="gradient-card rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 font-bold text-white" style="background-color: #9955DD;">T1 - 强力推荐</div>
+                    <div class="p-4 bg-white">
+                        <p class="text-sm text-gray-600">非常强力的角色，强度在线，值得长期培养</p>
+                    </div>
                 </div>
-                <div class="gradient-T2 rounded-lg p-4 text-white">
-                    <h3 class="font-bold">T2 - 可用之选</h3>
-                    <p class="text-sm mt-2 opacity-90">有一定强度，特定阵容下表现不错</p>
+                <div class="gradient-card rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 font-bold text-white" style="background-color: #3377DD;">T2 - 可用之选</div>
+                    <div class="p-4 bg-white">
+                        <p class="text-sm text-gray-600">有一定强度，特定阵容下表现不错</p>
+                    </div>
                 </div>
-                <div class="gradient-T3 rounded-lg p-4 text-white">
-                    <h3 class="font-bold">T3 - 不推荐</h3>
-                    <p class="text-sm mt-2 opacity-90">强度较低，非真爱不建议培养</p>
+                <div class="gradient-card rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 font-bold text-white" style="background-color: #555555;">T3 - 不推荐</div>
+                    <div class="p-4 bg-white">
+                        <p class="text-sm text-gray-600">强度较低，非真爱不建议投入资源</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 角色数据表格 -->
         <section class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-            <div class="p-6 border-b border-gray-200">
+            <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <h2 class="text-lg font-bold text-blue-600">📋 全角色数据表格</h2>
+                <div class="flex items-center gap-2">
+                    <label class="text-sm text-gray-600">筛选梯队：</label>
+                    <select id="tierFilter" onchange="filterTable()" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">全部</option>
+                        <option value="T0">T0 - 版本之子</option>
+                        <option value="T1">T1 - 强力推荐</option>
+                        <option value="T2">T2 - 可用之选</option>
+                        <option value="T3">T3 - 不推荐</option>
+                    </select>
+                </div>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full" id="characterTable">
                     <thead>
                         <tr class="bg-gray-50">
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">角色名称</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">角色定位</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">强度梯度</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('position')">角色定位<span class="sort-icon" id="sort-position"></span></th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('tier')">强度梯度<span class="sort-icon" id="sort-tier"></span></th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">获取方式</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">培养优先级</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('star')">培养优先级<span class="sort-icon" id="sort-star"></span></th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">适配场景</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">海洋霸主·大白鲨</span>
-                            </td>
-                            <td class="px-4 py-3">输出</td>
-                            <td class="px-4 py-3"><span class="bg-yellow-400 text-yellow-900 px-2 py-1 rounded text-xs font-bold">T0</span></td>
-                            <td class="px-4 py-3">高级召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图、BOSS战</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">深海女皇·章鱼</span>
-                            </td>
-                            <td class="px-4 py-3">控制</td>
-                            <td class="px-4 py-3"><span class="bg-yellow-400 text-yellow-900 px-2 py-1 rounded text-xs font-bold">T0</span></td>
-                            <td class="px-4 py-3">活动限定</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">PVP、BOSS战</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">珊瑚守护者</span>
-                            </td>
-                            <td class="px-4 py-3">坦克</td>
-                            <td class="px-4 py-3"><span class="bg-purple-400 text-purple-900 px-2 py-1 rounded text-xs font-bold">T1</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图、副本</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">电鳗法师</span>
-                            </td>
-                            <td class="px-4 py-3">输出</td>
-                            <td class="px-4 py-3"><span class="bg-purple-400 text-purple-900 px-2 py-1 rounded text-xs font-bold">T1</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图、BOSS战</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">鲨鱼猎手</span>
-                            </td>
-                            <td class="px-4 py-3">输出</td>
-                            <td class="px-4 py-3"><span class="bg-purple-400 text-purple-900 px-2 py-1 rounded text-xs font-bold">T1</span></td>
-                            <td class="px-4 py-3">高级召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图、PVP</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">水母治疗师</span>
-                            </td>
-                            <td class="px-4 py-3">辅助</td>
-                            <td class="px-4 py-3"><span class="bg-purple-400 text-purple-900 px-2 py-1 rounded text-xs font-bold">T1</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图、副本</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">海龟守护者</span>
-                            </td>
-                            <td class="px-4 py-3">坦克</td>
-                            <td class="px-4 py-3"><span class="bg-blue-400 text-blue-900 px-2 py-1 rounded text-xs font-bold">T2</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐⭐⭐</td>
-                            <td class="px-4 py-3">推图</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">海马牧师</span>
-                            </td>
-                            <td class="px-4 py-3">辅助</td>
-                            <td class="px-4 py-3"><span class="bg-blue-400 text-blue-900 px-2 py-1 rounded text-xs font-bold">T2</span></td>
-                            <td class="px-4 py-3">活动赠送</td>
-                            <td class="px-4 py-3">⭐⭐⭐</td>
-                            <td class="px-4 py-3">副本、BOSS战</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">海洋战士</span>
-                            </td>
-                            <td class="px-4 py-3">坦克</td>
-                            <td class="px-4 py-3"><span class="bg-blue-400 text-blue-900 px-2 py-1 rounded text-xs font-bold">T2</span></td>
-                            <td class="px-4 py-3">初始赠送</td>
-                            <td class="px-4 py-3">⭐⭐</td>
-                            <td class="px-4 py-3">前期推图</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">小丑鱼射手</span>
-                            </td>
-                            <td class="px-4 py-3">输出</td>
-                            <td class="px-4 py-3"><span class="bg-gray-400 text-gray-900 px-2 py-1 rounded text-xs font-bold">T3</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐</td>
-                            <td class="px-4 py-3">前期过渡</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3">
-                                <span class="font-medium">海星法师</span>
-                            </td>
-                            <td class="px-4 py-3">输出</td>
-                            <td class="px-4 py-3"><span class="bg-gray-400 text-gray-900 px-2 py-1 rounded text-xs font-bold">T3</span></td>
-                            <td class="px-4 py-3">普通召唤</td>
-                            <td class="px-4 py-3">⭐</td>
-                            <td class="px-4 py-3">前期过渡</td>
-                        </tr>
+                    <tbody id="tableBody">
+                        <!-- 数据由JS动态渲染 -->
                     </tbody>
                 </table>
+                <div id="emptyState" class="hidden p-8 text-center text-gray-500">
+                    角色数据更新中，敬请期待
+                </div>
             </div>
         </section>
 
-        <!-- 各梯度角色培养建议 -->
-        <section class="bg-white rounded-xl shadow-sm p-6">
-            <h2 class="text-lg font-bold text-blue-600 mb-4">💡 培养建议</h2>
-            
-            <div class="mb-6">
-                <h3 class="font-bold text-gray-800 mb-2">💰 零氪玩家培养路线</h3>
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <ul class="space-y-2 text-gray-600">
-                        <li><strong>必养：</strong>珊瑚守护者（坦克）、电鳗法师（输出）、水母治疗师（辅助）</li>
-                        <li><strong>可养：</strong>海龟守护者（备用坦克）、海马牧师（备用辅助）</li>
-                        <li><strong>不推荐：</strong>小丑鱼射手、海星法师等T3角色</li>
-                    </ul>
-                </div>
+        <!-- 角色培养总结 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">💡 角色培养指南总结</h2>
+            <div class="space-y-4 text-gray-600 text-sm">
+                <p><strong>新手必养T0 trio：</strong>优先集中资源培养海洋霸主·大白鲨（主C）、深海女皇·章鱼（控制）、珊瑚守护者（主坦），这三位是通关疯狂水世界深渊副本的核心。</p>
+                <p><strong>T1角色按需培养：</strong>电鳗法师、鲨鱼猎手、水母治疗师强度在线，可作为T0的下位替代或补充阵容。</p>
+                <p><strong>T2角色过渡使用：</strong>海龟守护者、海马牧师、海洋战士前期可用，但无需投入过多养成材料。</p>
+                <p><strong>T3角色避免培养：</strong>小丑鱼射手、海星法师仅作开局短期过渡，后期直接替换，不要浪费资源。</p>
             </div>
+        </section>
 
-            <div class="mb-6">
-                <h3 class="font-bold text-gray-800 mb-2">💎 微氪玩家培养路线</h3>
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <ul class="space-y-2 text-gray-600">
-                        <li><strong>必养：</strong>海洋霸主·大白鲨（输出核心）、深海女皇·章鱼（控制核心）</li>
-                        <li><strong>推荐：</strong>鲨鱼猎手（副输出）、珊瑚守护者（坦克）</li>
-                        <li><strong>辅助：</strong>水母治疗师、海马牧师</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="font-bold text-gray-800 mb-2">🎯 适配场景选择</h3>
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <ul class="space-y-2 text-gray-600">
-                        <li><strong>推图：</strong>珊瑚守护者 + 电鳗法师 + 水母治疗师 + 鲨鱼猎手</li>
-                        <li><strong>BOSS战：</strong>海洋霸主·大白鲨 + 深海女皇·章鱼 + 海马牧师</li>
-                        <li><strong>日常刷图：</strong>任意输出 + 坦克 + 辅助组合即可</li>
-                    </ul>
-                </div>
+        <!-- 站内导航链接 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-blue-600 mb-4">🔗 相关攻略推荐</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="detail.html?id=1" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                    <span class="text-2xl">📖</span>
+                    <div>
+                        <h3 class="font-medium text-gray-800">疯狂水世界新手开荒完整攻略</h3>
+                        <p class="text-sm text-gray-500">从零开始，快速上手游戏基础玩法</p>
+                    </div>
+                </a>
+                <a href="detail.html?id=9" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                    <span class="text-2xl">⚔️</span>
+                    <div>
+                        <h3 class="font-medium text-gray-800">全深渊副本分层通关汇总</h3>
+                        <p class="text-sm text-gray-500">平民轻松爬层，拿满全部奖励</p>
+                    </div>
+                </a>
+                <a href="detail.html?id=5" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                    <span class="text-2xl">⭐</span>
+                    <div>
+                        <h3 class="font-medium text-gray-800">SSR角色梯度培养详细攻略</h3>
+                        <p class="text-sm text-gray-500">分清强弱，不浪费养成资源</p>
+                    </div>
+                </a>
+                <a href="resource.html" class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                    <span class="text-2xl">🎁</span>
+                    <div>
+                        <h3 class="font-medium text-gray-800">最新通用兑换码福利汇总</h3>
+                        <p class="text-sm text-gray-500">领取免费道具，助力快速成长</p>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
-
-    <!-- 底部攻略推荐 -->
-    <div class="container mx-auto px-4 mt-8">
-        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6">
-            <h3 class="font-bold text-blue-600 mb-4">📖 热门攻略推荐</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="detail.html?id=9" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
-                    <span class="text-xs text-blue-500">副本攻略</span>
-                    <h4 class="font-medium mt-1 text-sm line-clamp-2">疯狂水世界深渊副本通关攻略｜平民轻松爬层</h4>
-                </a>
-                <a href="detail.html?id=5" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
-                    <span class="text-xs text-blue-500">角色养成</span>
-                    <h4 class="font-medium mt-1 text-sm line-clamp-2">SSR角色培养指南：哪些角色值得培养</h4>
-                </a>
-                <a href="detail.html?id=4" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
-                    <span class="text-xs text-blue-500">新手入门</span>
-                    <h4 class="font-medium mt-1 text-sm line-clamp-2">前期阵容搭配推荐：新手最强开局组合</h4>
-                </a>
-            </div>
-        </div>
-    </div>
 
     <!-- 统一页脚 -->
     <footer class="bg-gray-800 text-gray-300 py-6 mt-8">
@@ -329,6 +292,124 @@
     </footer>
 
     <script>
+    // 角色数据
+    const characters = [
+        { name: '海洋霸主·大白鲨', position: '输出', tier: 'T0', get_way: '高级召唤', star: 5, scene: '主线推图、深渊BOSS战、高层深渊副本', tip: '核心主C，优先升星，装备堆暴击和攻击' },
+        { name: '深海女皇·章鱼', position: '控制', tier: 'T0', get_way: '活动限定', star: 5, scene: 'PVP竞技场、深渊海怪巢穴BOSS战', tip: '强力控制，BOSS战专属禁锢减疗' },
+        { name: '珊瑚守护者', position: '坦克', tier: 'T1', get_way: '普通召唤', star: 4, scene: '日常推图、低层深渊副本', tip: '主力坦克，低层深渊常驻前排' },
+        { name: '鲨鱼猎手', position: '输出', tier: 'T1', get_way: '高级召唤', star: 4, scene: '推图、PVP对战', tip: '单体输出，切后排、PVP专用' },
+        { name: '水母治疗师', position: '辅助/治疗', tier: 'T1', get_way: '普通召唤', star: 4, scene: '推图、深渊持久战副本', tip: '治疗辅助，深渊持久战群体回血' },
+        { name: '海龟守护者', position: '坦克', tier: 'T2', get_way: '普通召唤', star: 3, scene: '新手前期开荒推图', tip: '过渡副坦，仅新手前期使用' },
+        { name: '海马牧师', position: '辅助/增益', tier: 'T2', get_way: '限时活动赠送', star: 3, scene: '副本、深渊BOSS减伤续航', tip: '增益辅助，给输出叠加暴击攻速buff' },
+        { name: '海洋战士', position: '坦克', tier: 'T2', get_way: '开局初始赠送', star: 3, scene: '新手前期开荒推图', tip: '初始赠送过渡坦克，前期开荒前排' },
+        { name: '小丑鱼射手', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: '纯过渡输出，后期伤害稀释严重' },
+        { name: '海星法师', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: '纯过渡输出，深渊完全打不动' }
+    ];
+
+    let currentSort = { field: null, order: 'asc' };
+    let filteredData = [...characters];
+
+    // 渲染星级
+    function renderStars(count) {
+        return '★'.repeat(count) + '☆'.repeat(5 - count);
+    }
+
+    // 渲染表格
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (data.length === 0) {
+            tbody.innerHTML = '';
+            emptyState.classList.remove('hidden');
+            return;
+        }
+        
+        emptyState.classList.add('hidden');
+        tbody.innerHTML = data.map(char => `
+            <tr class="border-b border-gray-100 hover:bg-blue-50 transition-colors">
+                <td class="px-4 py-3">
+                    <span class="font-medium tooltip">${char.name}
+                        <span class="tooltip-content">${char.tip}</span>
+                    </span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-600">${char.position}</td>
+                <td class="px-4 py-3">
+                    <span class="tier-${char.tier} px-2 py-1 rounded text-xs font-bold">${char.tier}</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-600">${char.get_way}</td>
+                <td class="px-4 py-3">
+                    <span class="star-filled text-sm">${renderStars(char.star)}</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-600">${char.scene}</td>
+            </tr>
+        `).join('');
+    }
+
+    // 筛选功能
+    function filterTable() {
+        const tier = document.getElementById('tierFilter').value;
+        if (tier === 'all') {
+            filteredData = [...characters];
+        } else {
+            filteredData = characters.filter(c => c.tier === tier);
+        }
+        // 重新应用排序
+        if (currentSort.field) {
+            sortData(currentSort.field, currentSort.order);
+        }
+        renderTable(filteredData);
+    }
+
+    // 排序功能
+    function sortTable(field) {
+        // 切换排序方向
+        if (currentSort.field === field) {
+            currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.field = field;
+            currentSort.order = 'asc';
+        }
+        
+        // 更新排序图标
+        document.querySelectorAll('.sortable span').forEach(span => {
+            span.className = 'sort-icon';
+        });
+        const sortIcon = document.getElementById(`sort-${field}`);
+        if (sortIcon) {
+            sortIcon.className = currentSort.order === 'asc' ? 'sort-asc' : 'sort-desc';
+        }
+        
+        sortData(field, currentSort.order);
+        renderTable(filteredData);
+    }
+
+    function sortData(field, order) {
+        const tierOrder = { 'T0': 4, 'T1': 3, 'T2': 2, 'T3': 1 };
+        
+        filteredData.sort((a, b) => {
+            let valA, valB;
+            
+            if (field === 'tier') {
+                valA = tierOrder[a.tier];
+                valB = tierOrder[b.tier];
+            } else if (field === 'star') {
+                valA = a.star;
+                valB = b.star;
+            } else {
+                valA = a[field];
+                valB = b[field];
+            }
+            
+            if (order === 'asc') {
+                return valA > valB ? 1 : -1;
+            } else {
+                return valA < valB ? 1 : -1;
+            }
+        });
+    }
+
+    // 收藏功能
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
     function updateFavoritesBadge() {
@@ -354,24 +435,22 @@
             return;
         }
         const guides = [
-            { id: 1, title: '新手入门全攻略', category: '新手入门' },
-            { id: 2, title: '角色快速升级技巧', category: '新手入门' },
-            { id: 3, title: '如何快速获取金币', category: '新手入门' },
-            { id: 4, title: '前期阵容搭配推荐', category: '新手入门' },
-            { id: 5, title: 'SSR角色培养指南', category: '角色养成' },
-            { id: 6, title: '装备强化系统详解', category: '角色养成' },
-            { id: 7, title: '角色突破材料获取', category: '角色养成' },
-            { id: 8, title: 'PVP竞技场入门', category: '角色养成' },
-            { id: 9, title: '深渊副本第一层通关攻略', category: '副本攻略' },
-            { id: 10, title: '水母森林探索攻略', category: '副本攻略' },
-            { id: 11, title: '珊瑚礁遗迹攻略', category: '副本攻略' },
-            { id: 12, title: '海怪巢穴通关指南', category: '副本攻略' },
-            { id: 13, title: '为什么我的角色战力上不去', category: '常见问题' },
-            { id: 14, title: '体力不够用怎么办', category: '常见问题' },
-            { id: 15, title: '抽卡概率是多少', category: '常见问题' },
-            { id: 16, title: '如何高效刷副本', category: '常见问题' },
-            { id: 17, title: '角色技能怎么加点', category: '常见问题' },
-            { id: 18, title: '公会系统怎么玩', category: '常见问题' }
+            { id: 1, title: '新手入门全攻略，从零进阶潜水大师', category: '新手入门' },
+            { id: 2, title: '角色快速升级技巧，告别卡级少走弯路', category: '新手入门' },
+            { id: 3, title: '快速获取金币技巧，新手告别缺钱难题', category: '新手入门' },
+            { id: 4, title: '前期阵容搭配推荐，新手最强开局组合少走弯路', category: '新手入门' },
+            { id: 5, title: 'SSR角色培养指南，分清强弱不浪费资源', category: '角色养成' },
+            { id: 6, title: '装备强化系统详解：提升战力的关键', category: '角色养成' },
+            { id: 7, title: '角色突破材料获取：最全掉落表', category: '角色养成' },
+            { id: 8, title: 'PVP竞技场入门：从青铜到黄金', category: '角色养成' },
+            { id: 9, title: '疯狂水世界深渊副本通关攻略｜平民轻松爬层，手把手教你拿满全部奖励', category: '副本攻略' },
+            { id: 10, title: '水母森林隐藏宝箱全点位｜囤满养成资源，轻松打通疯狂水世界深渊副本', category: '副本攻略' },
+            { id: 11, title: '珊瑚礁遗迹BOSS技能全解析｜吃透潮汐领主机制，囤齐装备助力完成疯狂水世界深渊副本通关攻略', category: '副本攻略' },
+            { id: 12, title: '海关巢穴阵容搭配，新手轻松不卡关', category: '副本攻略' },
+            { id: 13, title: '为什么我的角色战力上不去？常见问题解答', category: '常见问题' },
+            { id: 14, title: '体力不够用怎么办？体力管理技巧', category: '常见问题' },
+            { id: 15, title: '抽卡概率是多少？保底机制详解', category: '常见问题' },
+            { id: 16, title: '如何高效刷副本？节省时间技巧', category: '常见问题' }
         ];
         const favGuides = favorites.map(id => guides.find(g => g.id === id)).filter(Boolean);
         container.innerHTML = favGuides.map(g => `
@@ -393,11 +472,16 @@
         updateFavoritesList();
     }
 
+    // 移动端菜单切换
+    document.getElementById('menuBtn')?.addEventListener('click', () => {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('hidden');
+    });
+
+    // 初始化
     document.addEventListener('DOMContentLoaded', () => {
         updateFavoritesBadge();
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
+        renderTable(characters);
     });
     </script>
 </body>
