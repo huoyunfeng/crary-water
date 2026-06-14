@@ -204,6 +204,7 @@
                     <thead>
                         <tr class="bg-gray-50">
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">角色名称</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">游戏原生名称</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('position')">角色定位<span class="sort-icon" id="sort-position"></span></th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('tier')">强度梯度<span class="sort-icon" id="sort-tier"></span></th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">获取方式</th>
@@ -225,10 +226,10 @@
         <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
             <h2 class="text-lg font-bold text-blue-600 mb-4">💡 角色培养指南总结</h2>
             <div class="space-y-4 text-gray-600 text-sm">
-                <p><strong>新手必养T0 trio：</strong>优先集中资源培养海洋霸主·大白鲨（主C）、深海女皇·章鱼（控制）、珊瑚守护者（主坦），这三位是通关疯狂水世界深渊副本的核心。</p>
-                <p><strong>T1角色按需培养：</strong>电鳗法师、鲨鱼猎手、水母治疗师强度在线，可作为T0的下位替代或补充阵容。</p>
-                <p><strong>T2角色过渡使用：</strong>海龟守护者、海马牧师、海洋战士前期可用，但无需投入过多养成材料。</p>
-                <p><strong>T3角色避免培养：</strong>小丑鱼射手、海星法师仅作开局短期过渡，后期直接替换，不要浪费资源。</p>
+                <p><strong>新手必养T0 trio：</strong>优先集中资源培养兰博（主C）、蜜雪儿（控制）、终结者（主坦），这三位是通关疯狂水世界深渊副本的核心。</p>
+                <p><strong>T1角色按需培养：</strong>电鳗法师、机器屠夫、神父欧玛强度在线，可作为T0的下位替代或补充阵容。</p>
+                <p><strong>T2角色过渡使用：</strong>不死州长、巫师老侃、大嘴山姆前期可用，但无需投入过多养成材料。</p>
+                <p><strong>T3角色避免培养：</strong>小丑杰克、雷教授仅作开局短期过渡，后期直接替换，不要浪费资源。</p>
             </div>
         </section>
 
@@ -294,16 +295,17 @@
     <script>
     // 角色数据
     const characters = [
-        { name: '海洋霸主·大白鲨', position: '输出', tier: 'T0', get_way: '高级召唤', star: 5, scene: '主线推图、深渊BOSS战、高层深渊副本', tip: '核心主C，优先升星，装备堆暴击和攻击' },
-        { name: '深海女皇·章鱼', position: '控制', tier: 'T0', get_way: '活动限定', star: 5, scene: 'PVP竞技场、深渊海怪巢穴BOSS战', tip: '强力控制，BOSS战专属禁锢减疗' },
-        { name: '珊瑚守护者', position: '坦克', tier: 'T1', get_way: '普通召唤', star: 4, scene: '日常推图、低层深渊副本', tip: '主力坦克，低层深渊常驻前排' },
-        { name: '鲨鱼猎手', position: '输出', tier: 'T1', get_way: '高级召唤', star: 4, scene: '推图、PVP对战', tip: '单体输出，切后排、PVP专用' },
-        { name: '水母治疗师', position: '辅助/治疗', tier: 'T1', get_way: '普通召唤', star: 4, scene: '推图、深渊持久战副本', tip: '治疗辅助，深渊持久战群体回血' },
-        { name: '海龟守护者', position: '坦克', tier: 'T2', get_way: '普通召唤', star: 3, scene: '新手前期开荒推图', tip: '过渡副坦，仅新手前期使用' },
-        { name: '海马牧师', position: '辅助/增益', tier: 'T2', get_way: '限时活动赠送', star: 3, scene: '副本、深渊BOSS减伤续航', tip: '增益辅助，给输出叠加暴击攻速buff' },
-        { name: '海洋战士', position: '坦克', tier: 'T2', get_way: '开局初始赠送', star: 3, scene: '新手前期开荒推图', tip: '初始赠送过渡坦克，前期开荒前排' },
-        { name: '小丑鱼射手', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: '纯过渡输出，后期伤害稀释严重' },
-        { name: '海星法师', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: '纯过渡输出，深渊完全打不动' }
+        { name: '海洋霸主·大白鲨', native_name: '兰博', position: '输出', tier: 'T0', get_way: '高级召唤', star: 5, scene: '主线推图、深渊BOSS战、高层深渊副本', tip: 'T0主C，深渊核心输出，优先升星' },
+        { name: '深海女皇·章鱼', native_name: '蜜雪儿', position: '控制', tier: 'T0', get_way: '活动限定', star: 5, scene: 'PVP竞技场、深渊海怪巢穴BOSS战', tip: 'T0控制，深渊BOSS专用禁锢减疗' },
+        { name: '珊瑚守护者', native_name: '终结者', position: '坦克', tier: 'T1', get_way: '普通召唤', star: 4, scene: '日常推图、低层深渊副本', tip: 'T1主力坦克，低层深渊常驻前排' },
+        { name: '电鳗法师', native_name: '电鳗法师', position: '输出', tier: 'T1', get_way: '普通召唤', star: 4, scene: '推图、深渊BOSS持续输出', tip: 'T1持续输出型法师，适合长线作战' },
+        { name: '鲨鱼猎手', native_name: '机器屠夫', position: '输出', tier: 'T1', get_way: '高级召唤', star: 4, scene: '推图、PVP对战', tip: 'T1单体输出，切后排、PVP专用' },
+        { name: '水母治疗师', native_name: '神父欧玛', position: '辅助/治疗', tier: 'T1', get_way: '普通召唤', star: 4, scene: '推图、深渊持久战副本', tip: 'T1治疗辅助，深渊持久战群体回血' },
+        { name: '海龟守护者', native_name: '不死州长', position: '坦克', tier: 'T2', get_way: '普通召唤', star: 3, scene: '新手前期开荒推图', tip: 'T2过渡副坦，仅新手前期使用' },
+        { name: '海马牧师', native_name: '巫师老侃', position: '辅助/增益', tier: 'T2', get_way: '限时活动赠送', star: 3, scene: '副本、深渊BOSS减伤续航', tip: 'T2增益辅助，给输出叠加暴击攻速buff' },
+        { name: '海洋战士', native_name: '大嘴山姆', position: '坦克', tier: 'T2', get_way: '开局初始赠送', star: 3, scene: '新手前期开荒推图', tip: 'T2开局坦克（登录赠送）' },
+        { name: '小丑鱼射手', native_name: '小丑杰克', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: 'T3过渡输出，后期伤害稀释严重' },
+        { name: '海星法师', native_name: '雷教授', position: '输出', tier: 'T3', get_way: '普通召唤', star: 1, scene: '开局短期过渡', tip: 'T3法术过渡输出，深渊完全打不动' }
     ];
 
     let currentSort = { field: null, order: 'asc' };
@@ -333,6 +335,7 @@
                         <span class="tooltip-content">${char.tip}</span>
                     </span>
                 </td>
+                <td class="px-4 py-3 text-sm text-gray-600">${char.native_name}</td>
                 <td class="px-4 py-3 text-sm text-gray-600">${char.position}</td>
                 <td class="px-4 py-3">
                     <span class="tier-${char.tier} px-2 py-1 rounded text-xs font-bold">${char.tier}</span>
