@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://crary-water.vercel.app/sitemap.xml
