@@ -27,21 +27,21 @@
 </head>
 <body>
     <!-- 顶部固定导航栏 -->
-    <header class="bg-blue-500 text-white sticky top-0 z-50 shadow-lg">
+    <header class="bg-blue-500 text-gray-900 sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-14">
                 <div class="flex items-center gap-2">
                     <span class="text-2xl">🌊</span>
-                    <a href="index.html" class="font-bold text-lg">疯狂水世界攻略</a>
+                    <a href="index.html" class="font-bold text-lg text-gray-900">疯狂水世界攻略</a>
                 </div>
                 <nav class="hidden md:flex items-center gap-1">
-                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600">首页</a>
-                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600">全部攻略</a>
-                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600">新手入门</a>
-                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600">角色图鉴</a>
-                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600">副本攻略</a>
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">副本攻略</a>
                     <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">兑换码福利</a>
-                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600">常见问题</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">常见问题</a>
                 </nav>
                 <div class="flex items-center gap-3">
                     <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
@@ -49,20 +49,20 @@
                         <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                     </button>
                     <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
-                        <span>☰</span>
+                        <span class="text-gray-900">☰</span>
                     </button>
                 </div>
             </div>
             <!-- 移动端菜单 -->
             <div id="mobileMenu" class="md:hidden hidden pb-4">
                 <nav class="flex flex-col gap-1">
-                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600">首页</a>
-                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600">全部攻略</a>
-                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600">新手入门</a>
-                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600">角色图鉴</a>
-                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600">副本攻略</a>
-                    <a href="resource.html" class="py-2 px-3 rounded bg-blue-600">兑换码福利</a>
-                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600">常见问题</a>
+                    <a href="index.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">首页</a>
+                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded bg-blue-600 text-gray-900">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">常见问题</a>
                 </nav>
             </div>
         </div>
@@ -253,7 +253,7 @@
                     <p>疯狂水世界专属攻略站 持续更新</p>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-200 text-sm">
                 © 2024 疯狂水世界攻略网 | 游戏攻略仅供参考
             </div>
         </div>
