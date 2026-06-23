@@ -90,6 +90,18 @@
             .gradient-card-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
             }
+            .mobile-hide {
+                display: none !important;
+            }
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        @media (max-width: 480px) {
+            .gradient-card-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
@@ -199,17 +211,17 @@
                     </select>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full" id="characterTable">
+            <div class="table-container">
+                <table class="w-full min-w-[640px]" id="characterTable">
                     <thead>
                         <tr class="bg-gray-50">
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">角色名称</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">游戏原生名称</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 mobile-hide">游戏原生名称</th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('position')">角色定位<span class="sort-icon" id="sort-position"></span></th>
                             <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('tier')">强度梯度<span class="sort-icon" id="sort-tier"></span></th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">获取方式</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('star')">培养优先级<span class="sort-icon" id="sort-star"></span></th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">适配场景</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 mobile-hide">获取方式</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 sortable" onclick="sortTable('star')">优先级<span class="sort-icon" id="sort-star"></span></th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 mobile-hide">适配场景</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -335,16 +347,16 @@
                         <span class="tooltip-content">${char.tip}</span>
                     </span>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-600">${char.native_name}</td>
+                <td class="px-4 py-3 text-sm text-gray-600 mobile-hide">${char.native_name}</td>
                 <td class="px-4 py-3 text-sm text-gray-600">${char.position}</td>
                 <td class="px-4 py-3">
                     <span class="tier-${char.tier} px-2 py-1 rounded text-xs font-bold">${char.tier}</span>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-600">${char.get_way}</td>
+                <td class="px-4 py-3 text-sm text-gray-600 mobile-hide">${char.get_way}</td>
                 <td class="px-4 py-3">
                     <span class="star-filled text-sm">${renderStars(char.star)}</span>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-600">${char.scene}</td>
+                <td class="px-4 py-3 text-sm text-gray-600 mobile-hide">${char.scene}</td>
             </tr>
         `).join('');
     }
