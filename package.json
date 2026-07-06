@@ -1,0 +1,15 @@
+{
+  "name": "crazy-water-world-guide",
+  "version": "1.0.0",
+  "description": "疯狂水世界游戏攻略网站",
+  "main": "index.html",
+  "scripts": {
+    "build-css": "npx tailwindcss -i ./src/input.css -o ./tw.css --minify"
+  },
+  "keywords": ["game", "guide", "攻略"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

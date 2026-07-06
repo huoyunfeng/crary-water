@@ -6,7 +6,7 @@
     <title>疯狂水世界攻略站 - 新手入门|角色养成|副本通关|礼包兑换码</title>
     <meta name="description" content="疯狂水世界完整攻略大全，零氪开局教程、全角色强度梯度排行、副本BOSS低配打法、长期有效礼包兑换码、资源速刷技巧，实时同步新版本活动">
     <meta name="keywords" content="疯狂水世界攻略,新手入门,角色养成,副本攻略,兑换码,礼包码">
-    <script src="https://cdn.tailwindcss.com/3.4.17" defer></script>
+    <link rel="stylesheet" href="/tw.css">
     <style>
         html { scroll-behavior: smooth; }
         body { background-color: #f0f8ff; }
@@ -43,20 +43,20 @@
                     <a href="index.html" class="font-bold text-lg text-gray-900">疯狂水世界攻略</a>
                 </div>
                 <nav class="hidden md:flex items-center gap-1">
-                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active">首页</a>
-                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">全部攻略</a>
-                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">新手入门</a>
-                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">角色图鉴</a>
-                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">副本攻略</a>
-                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">兑换码福利</a>
-                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900">常见问题</a>
+                    <a href="index.html" class="px-3 py-2 rounded hover:bg-blue-600 nav-active transform translate-z-0 transition-colors duration-200">首页</a>
+                    <a href="list.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">新手入门</a>
+                    <a href="character.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">副本攻略</a>
+                    <a href="resource.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">兑换码福利</a>
+                    <a href="faq.html" class="px-3 py-2 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">常见问题</a>
                 </nav>
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg">
+                    <button onclick="toggleFavorites()" class="relative p-2 hover:bg-blue-600 rounded-lg transform translate-z-0 transition-colors duration-200">
                         <span class="text-xl">⭐</span>
                         <span id="favBadge" class="hidden absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                     </button>
-                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg">
+                    <button id="menuBtn" class="md:hidden p-2 hover:bg-blue-600 rounded-lg transform translate-z-0 transition-colors duration-200">
                         <span class="text-gray-900">☰</span>
                     </button>
                 </div>
@@ -65,12 +65,12 @@
             <div id="mobileMenu" class="md:hidden hidden pb-4">
                 <nav class="flex flex-col gap-1">
                     <a href="index.html" class="py-2 px-3 rounded bg-blue-600 text-gray-900">首页</a>
-                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">全部攻略</a>
-                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">新手入门</a>
-                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">角色图鉴</a>
-                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">副本攻略</a>
-                    <a href="resource.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">兑换码福利</a>
-                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900">常见问题</a>
+                    <a href="list.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">全部攻略</a>
+                    <a href="list.html?category=新手入门" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">新手入门</a>
+                    <a href="character.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">角色图鉴</a>
+                    <a href="list.html?category=副本攻略" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">副本攻略</a>
+                    <a href="resource.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">兑换码福利</a>
+                    <a href="faq.html" class="py-2 px-3 rounded hover:bg-blue-600 text-gray-900 transform translate-z-0 transition-colors duration-200">常见问题</a>
                 </nav>
             </div>
         </div>
@@ -81,7 +81,7 @@
         <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-hidden flex flex-col">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">⭐ 我的收藏</h2>
-                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700">✕</button>
+                <button onclick="toggleFavorites()" class="text-gray-500 hover:text-gray-700 transform translate-z-0 transition-colors duration-200">✕</button>
             </div>
             <div id="favoritesList" class="flex-1 overflow-y-auto"></div>
         </div>
@@ -96,11 +96,11 @@
                 《疯狂水世界》是一款深海探险题材的回合制手游，玩家将化身潜水大师，探索神秘的海底世界，收集强力角色，挑战各种副本BOSS。本站提供最全面的新手入门教程、角色强度排行、副本通关攻略、礼包兑换码等内容，助力各位玩家快速成长！
             </p>
             <div class="mt-4 flex flex-wrap gap-3">
-                <a href="character.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition-colors">角色介绍</a>
-                <a href="detail.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition-colors">玩法详情</a>
-                <a href="faq.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition-colors">常见问题FAQ</a>
-                <a href="list.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition-colors">道具清单</a>
-                <a href="resource.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transition-colors">资源获取指南</a>
+                <a href="character.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transform translate-z-0 transition-colors duration-200">角色介绍</a>
+                <a href="detail.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transform translate-z-0 transition-colors duration-200">玩法详情</a>
+                <a href="faq.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transform translate-z-0 transition-colors duration-200">常见问题FAQ</a>
+                <a href="list.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transform translate-z-0 transition-colors duration-200">道具清单</a>
+                <a href="resource.html" class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200 transform translate-z-0 transition-colors duration-200">资源获取指南</a>
             </div>
         </section>
 
@@ -110,7 +110,7 @@
                 <span>🔥</span>热门必看攻略
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='detail.html?id=1'">
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md cursor-pointer transform translate-z-0 transition-shadow duration-200" onclick="window.location.href='detail.html?id=1'">
                     <div class="bg-gradient-to-r from-blue-300 to-blue-500 h-28 flex items-center justify-center">
                         <span class="text-4xl">🐚</span>
                     </div>
@@ -119,7 +119,7 @@
                         <p class="text-sm text-gray-500">从零开始成为潜水大师，少走弯路</p>
                     </div>
                 </article>
-                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='detail.html?id=5'">
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md cursor-pointer transform translate-z-0 transition-shadow duration-200" onclick="window.location.href='detail.html?id=5'">
                     <div class="bg-gradient-to-r from-purple-300 to-purple-500 h-28 flex items-center justify-center">
                         <span class="text-4xl">⚔️</span>
                     </div>
@@ -128,7 +128,7 @@
                         <p class="text-sm text-gray-500">哪些角色值得培养，培养优先级解析</p>
                     </div>
                 </article>
-                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='detail.html?id=9'">
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md cursor-pointer transform translate-z-0 transition-shadow duration-200" onclick="window.location.href='detail.html?id=9'">
                     <div class="bg-gradient-to-r from-red-300 to-red-500 h-28 flex items-center justify-center">
                         <span class="text-4xl">🏴‍☠️</span>
                     </div>
@@ -137,13 +137,13 @@
                         <p class="text-sm text-gray-500">BOSS技能解析与通关要点</p>
                     </div>
                 </article>
-                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='resource.html'">
-                    <div class="bg-gradient-to-r from-yellow-300 to-yellow-500 h-28 flex items-center justify-center">
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md cursor-pointer transform translate-z-0 transition-shadow duration-200" onclick="window.location.href='resource.html'">
+                    <div class="bg-gradient-to-r from-green-300 to-green-500 h-28 flex items-center justify-center">
                         <span class="text-4xl">🎁</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-bold text-base mb-1">最新兑换码福利</h3>
-                        <p class="text-sm text-gray-500">永久有效兑换码与限时活动礼包</p>
+                        <h3 class="font-bold text-base mb-1">资源福利领取</h3>
+                        <p class="text-sm text-gray-500">兑换码、金币、体力获取攻略</p>
                     </div>
                 </article>
             </div>
@@ -155,35 +155,35 @@
                 <span>📅</span>最新更新攻略
             </h2>
             <div class="space-y-3">
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors" onclick="window.location.href='detail.html?id=18'">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transform translate-z-0 transition-colors duration-200" onclick="window.location.href='detail.html?id=18'">
                     <div>
                         <h3 class="font-medium">公会系统怎么玩？公会贡献获取攻略</h3>
                         <p class="text-xs text-gray-500 mt-1">发布于 2024-02-28</p>
                     </div>
                     <span class="text-blue-600 text-sm">常见问题</span>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors" onclick="window.location.href='detail.html?id=17'">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transform translate-z-0 transition-colors duration-200" onclick="window.location.href='detail.html?id=17'">
                     <div>
                         <h3 class="font-medium">角色技能怎么加点？技能升级优先级</h3>
                         <p class="text-xs text-gray-500 mt-1">发布于 2024-02-25</p>
                     </div>
                     <span class="text-blue-600 text-sm">常见问题</span>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors" onclick="window.location.href='detail.html?id=16'">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transform translate-z-0 transition-colors duration-200" onclick="window.location.href='detail.html?id=16'">
                     <div>
                         <h3 class="font-medium">如何高效刷副本？节省时间技巧</h3>
                         <p class="text-xs text-gray-500 mt-1">发布于 2024-02-22</p>
                     </div>
                     <span class="text-blue-600 text-sm">常见问题</span>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors" onclick="window.location.href='detail.html?id=15'">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transform translate-z-0 transition-colors duration-200" onclick="window.location.href='detail.html?id=15'">
                     <div>
                         <h3 class="font-medium">抽卡概率是多少？保底机制详解</h3>
                         <p class="text-xs text-gray-500 mt-1">发布于 2024-02-20</p>
                     </div>
                     <span class="text-blue-600 text-sm">常见问题</span>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors" onclick="window.location.href='detail.html?id=12'">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transform translate-z-0 transition-colors duration-200" onclick="window.location.href='detail.html?id=12'">
                     <div>
                         <h3 class="font-medium">海怪巢穴通关指南：阵容搭配推荐</h3>
                         <p class="text-xs text-gray-500 mt-1">发布于 2024-02-10</p>
@@ -192,7 +192,7 @@
                 </div>
             </div>
             <div class="mt-4 text-center">
-                <a href="list.html" class="text-blue-600 hover:text-blue-700 text-sm">查看全部攻略 →</a>
+                <a href="list.html" class="text-blue-600 hover:text-blue-700 text-sm transform translate-z-0 transition-colors duration-200">查看全部攻略 →</a>
             </div>
         </section>
     </main>
@@ -202,15 +202,15 @@
         <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6">
             <h3 class="font-bold text-blue-600 mb-4">📖 热门攻略推荐</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="detail.html?id=9" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
+                <a href="detail.html?id=9" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md block transform translate-z-0 transition-shadow duration-200">
                     <span class="text-xs text-blue-500">副本攻略</span>
                     <h4 class="font-medium mt-1 text-sm line-clamp-2">疯狂水世界深渊副本通关攻略｜平民轻松爬层</h4>
                 </a>
-                <a href="detail.html?id=5" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
+                <a href="detail.html?id=5" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md block transform translate-z-0 transition-shadow duration-200">
                     <span class="text-xs text-blue-500">角色养成</span>
                     <h4 class="font-medium mt-1 text-sm line-clamp-2">SSR角色培养指南：哪些角色值得培养</h4>
                 </a>
-                <a href="detail.html?id=4" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow block">
+                <a href="detail.html?id=4" class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md block transform translate-z-0 transition-shadow duration-200">
                     <span class="text-xs text-blue-500">新手入门</span>
                     <h4 class="font-medium mt-1 text-sm line-clamp-2">前期阵容搭配推荐：新手最强开局组合</h4>
                 </a>
